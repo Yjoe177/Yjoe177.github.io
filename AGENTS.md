@@ -117,7 +117,7 @@ src/
 │  ├─ PageLayout.astro      Inner page header + optional .writing-page wrapper
 │  └─ BlogPostLayout.astro  Article header, cover, prose, tags, prev/next
 ├─ lib/
-│  ├─ posts.ts              Draft-aware queries, dates, reading time
+│  ├─ posts.ts              Draft-aware queries, dates, ordering
 │  └─ research.ts           Research/publication queries, labels
 ├─ pages/
 │  ├─ index.astro
@@ -154,8 +154,7 @@ zero-width box and causes overflow). Do not "simplify" this back to one
    - RSS explicitly uses `includeDrafts: false`.
    - `getPosts()` also filters entry IDs beginning with `_` (hidden templates).
 4. Dynamic routes use rest params (`[...slug]`) so custom nested IDs work.
-5. Reading time is computed from the raw body, not stored in frontmatter.
-6. Dates are optional:
+5. Dates are optional:
    - `pubDate` is the only field treated as an actual publication timestamp; it
      feeds RSS and SEO when present.
    - `displayDate` is visible on cards/articles but is **not** a publication
@@ -165,12 +164,12 @@ zero-width box and causes overflow). Do not "simplify" this back to one
      ID. Undated posts never receive generated dates.
    - The four current posts use `order` 1–4; *Through My 19th Year* is second and
      shows July 17, 2026 via `displayDate`.
-7. Publication files beginning with `_` are hidden templates. Keep the filter in
+6. Publication files beginning with `_` are hidden templates. Keep the filter in
    `getPublications()` if the folder has no real entries.
-8. Between the Lines uses the `/blog/` URL but has **no categories**. The blog
+7. Between the Lines uses the `/blog/` URL but has **no categories**. The blog
    schema intentionally omits a `category` field; do not add one. Old category
    URLs redirect to `/blog/` via `astro.config.mjs`.
-9. Academic destinations are centralized in `src/config/academic.ts`; profile
+8. Academic destinations are centralized in `src/config/academic.ts`; profile
    entries carry structured URL and supervisor links for About/CV rendering.
 
 ## Design system
@@ -309,7 +308,7 @@ Manual/automated checks performed for this revision:
 - Old category URLs redirect to `/blog/` in a browser.
 - Academic links resolve: Huan Wang, ENCODE Lab, Westlake University.
 - Temporary published MDX + draft test: published article rendered, draft route
-  and RSS item excluded, tags and reading time rendered, no category markup.
+  and RSS item excluded, tags rendered, no category markup.
 - Four supplied posts preserve their exact article-body hashes. Only
   *Through My 19th Year* shows July 17, 2026; the other three render without any
   visible date. RSS/SEO contain no `pubDate`/`datePublished` for them.

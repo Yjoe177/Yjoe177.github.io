@@ -1,6 +1,6 @@
 ---
 import type { BlogPost } from '../lib/posts';
-import { formatDate, getPostDisplayDate, isoDate, readingTime } from '../lib/posts';
+import { formatDate, getPostDisplayDate, isoDate } from '../lib/posts';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -23,7 +23,6 @@ const { posts } = Astro.props;
   <div class="writing-list">
     {posts.map((post) => {
       const href = `/blog/${post.id}/`;
-      const minutes = readingTime(post.body);
       const displayDate = getPostDisplayDate(post);
       return (
         <article class="writing-entry">
@@ -33,7 +32,6 @@ const { posts } = Astro.props;
                 {formatDate(displayDate, 'long')}
               </time>
             )}
-            <span>{minutes} min read</span>
             {post.data.draft && <span class="badge badge--draft">Draft</span>}
           </div>
           <div class="writing-entry-main">

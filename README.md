@@ -10,7 +10,7 @@ collections, and hand-written CSS.
 - Research project pages with structured metadata
 - Publication record separated from ongoing work
 - Between the Lines: uncategorized writing, optional dates, manual ordering,
-  drafts, reading time, covers, RSS
+  drafts, covers, RSS
 - Clickable academic links for Westlake University, ENCODE Lab, and Prof. Huan Wang
 - CV page with two downloadable one-page A4 PDFs (phone number redacted)
 - Featured photograph on Home and About
@@ -77,7 +77,7 @@ Open the URL printed by Astro, normally
 │  ├─ content.config.ts          # Collection schemas
 │  ├─ data/                      # News, education, awards, activities, skills
 │  ├─ layouts/                   # Base, inner-page, and blog layouts
-│  ├─ lib/                       # Content queries, dates, reading time
+│  ├─ lib/                       # Content queries, dates, ordering
 │  ├─ pages/                     # Routes (static output)
 │  └─ styles/global.css          # Design tokens, components, prose, print
 ├─ CONTENT_GUIDE.md              # How to add/edit all content

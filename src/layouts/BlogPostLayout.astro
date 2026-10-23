@@ -1,7 +1,7 @@
 ﻿---
 import BaseLayout from './BaseLayout.astro';
 import type { BlogPost } from '../lib/posts';
-import { formatDate, getPostDisplayDate, isoDate, readingTime } from '../lib/posts';
+import { formatDate, getPostDisplayDate, isoDate } from '../lib/posts';
 import { siteConfig } from '../config/site';
 import { writingSpace } from '../config/writing';
 import Icon from '../components/Icon.astro';
@@ -14,7 +14,6 @@ interface Props {
 
 const { post, previous, next } = Astro.props;
 const data = post.data;
-const minutes = readingTime(post.body);
 const displayDate = getPostDisplayDate(post);
 const modifiedDate = data.updatedDate ?? data.pubDate;
 const coverUrl = data.cover ? new URL(data.cover, Astro.site ?? Astro.url).href : undefined;
@@ -61,8 +60,6 @@ const structuredData = {
                 <time datetime={isoDate(displayDate)}>{formatDate(displayDate)}</time>
               </span>
             )}
-            <span class="dot" aria-hidden="true"></span>
-            <span>{minutes} min read</span>
             {data.updatedDate && (
               <span class="post-updated">
                 <span class="dot" aria-hidden="true"></span>

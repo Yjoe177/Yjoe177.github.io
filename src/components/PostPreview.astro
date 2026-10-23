@@ -1,6 +1,6 @@
 ---
 import type { BlogPost } from '../lib/posts';
-import { formatDate, getPostDisplayDate, isoDate, readingTime } from '../lib/posts';
+import { formatDate, getPostDisplayDate, isoDate } from '../lib/posts';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -9,7 +9,6 @@ interface Props {
 
 const { post } = Astro.props;
 const href = `/blog/${post.id}/`;
-const minutes = readingTime(post.body);
 const displayDate = getPostDisplayDate(post);
 ---
 
@@ -18,16 +17,16 @@ const displayDate = getPostDisplayDate(post);
     <h3 class="post-preview-title">
       <a href={href}>{post.data.title}</a>
     </h3>
-    <div class="post-preview-meta">
-      {displayDate && (
-        <span class="post-preview-date">
-          <time datetime={isoDate(displayDate)}>{formatDate(displayDate, 'long')}</time>
-          <span aria-hidden="true">·</span>
-        </span>
-      )}
-      <span>{minutes} min read</span>
-      {post.data.draft && <span class="badge badge--draft">Draft</span>}
-    </div>
+    {(displayDate || post.data.draft) && (
+      <div class="post-preview-meta">
+        {displayDate && (
+          <span class="post-preview-date">
+            <time datetime={isoDate(displayDate)}>{formatDate(displayDate, 'long')}</time>
+          </span>
+        )}
+        {post.data.draft && <span class="badge badge--draft">Draft</span>}
+      </div>
+    )}
   </div>
   <span class="post-preview-arrow" aria-hidden="true">
     <Icon name="arrow-up-right" size={16} />

@@ -90,9 +90,6 @@ coverAlt: 'A description of the cover image' # required if cover is used
 | `cover` | No | Public path, e.g. `/images/blog/cover.jpg`. |
 | `coverAlt` | If cover | Describe the image for screen readers. |
 
-Reading time is calculated automatically from the body (about 200 words per
-minute). You do not add it manually.
-
 ### Dates and ordering
 
 - `pubDate` is the only field treated as an actual publication timestamp.
@@ -137,8 +134,8 @@ with an underscore.
 ### Listing, filters, and legacy category URLs
 
 - `/blog/` is the only listing. It has no category filters or category cards.
-- Every published piece shows its title, description, and reading time. A date is
-  shown only when `displayDate` or `pubDate` exists.
+- Every published piece shows its title and description. A date is shown only
+  when `displayDate` or `pubDate` exists.
 - The old `/blog/category/thoughts/`, `/stories/`, `/research-notes/`, and
   `/life/` URLs redirect to `/blog/` via `astro.config.mjs`.
 - Do not recreate category routes or re-add a `category` field.
