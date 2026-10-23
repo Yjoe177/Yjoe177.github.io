@@ -9,7 +9,8 @@ collections, and hand-written CSS.
 - **Target repository:** <https://github.com/Yjoe177/Yjoe177.github.io>
 - Research project pages with structured metadata
 - Publication record separated from ongoing work
-- Between the Lines: uncategorized writing, drafts, reading time, covers, RSS
+- Between the Lines: uncategorized writing, optional dates, manual ordering,
+  drafts, reading time, covers, RSS
 - Clickable academic links for Westlake University, ENCODE Lab, and Prof. Huan Wang
 - CV page with two downloadable one-page A4 PDFs (phone number redacted)
 - Featured photograph on Home and About
@@ -158,11 +159,11 @@ and photographs. It intentionally does **not** invent publications, metrics, or
 missing personal details. Remaining gaps are tracked in `FACTS_NEEDED.md`.
 There are no visible placeholder notes on public pages.
 
-The writing space, **Between the Lines**, currently has no published entries;
-the landing page is a designed empty state. Two rich starter templates and one
-draft template live outside the published collection in
-`src/content/_examples/blog/`. Old category URLs redirect to `/blog/`; there is
-no category filtering or taxonomy.
+The writing space, **Between the Lines**, currently contains four posts. Dates
+are optional: *Through My 19th Year* shows July 17, 2026 via `displayDate`, while
+the other three are intentionally undated. Date display is controlled without
+inventing publication timestamps in RSS or SEO. Posts use explicit `order` 1–4
+to preserve the supplied sequence.
 
 ## Credits
 

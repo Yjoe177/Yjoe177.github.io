@@ -46,7 +46,7 @@ export const siteConfig = {
   /** Professional profiles confirmed in the current CV / GitHub account. */
   links: [
     { label: 'GitHub', href: 'https://github.com/Yjoe177', handle: '@Yjoe177' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/youssef-amr', handle: 'in/youssef-amr' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/youssef-amr-9b2541290/', handle: 'in/youssef-amr-9b2541290' },
     { label: 'Google Scholar', href: '', handle: '' },
     { label: 'ORCID', href: '', handle: '' },
     { label: 'X / Twitter', href: '', handle: '' },

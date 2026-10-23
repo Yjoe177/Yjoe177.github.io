@@ -1275,6 +1275,12 @@ hr {
   color: var(--ink-muted);
 }
 
+.post-preview-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
 .post-preview-meta .badge {
   font-size: 0.56rem;
 }
@@ -1997,6 +2003,12 @@ hr {
 .post-meta a:hover {
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+
+.post-meta-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .post-space-label {

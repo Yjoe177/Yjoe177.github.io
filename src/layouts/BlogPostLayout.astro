@@ -1,7 +1,7 @@
 ﻿---
 import BaseLayout from './BaseLayout.astro';
 import type { BlogPost } from '../lib/posts';
-import { formatDate, isoDate, readingTime } from '../lib/posts';
+import { formatDate, getPostDisplayDate, isoDate, readingTime } from '../lib/posts';
 import { siteConfig } from '../config/site';
 import { writingSpace } from '../config/writing';
 import Icon from '../components/Icon.astro';
@@ -15,6 +15,8 @@ interface Props {
 const { post, previous, next } = Astro.props;
 const data = post.data;
 const minutes = readingTime(post.body);
+const displayDate = getPostDisplayDate(post);
+const modifiedDate = data.updatedDate ?? data.pubDate;
 const coverUrl = data.cover ? new URL(data.cover, Astro.site ?? Astro.url).href : undefined;
 const canonical = new URL(`/blog/${post.id}/`, Astro.site ?? Astro.url).href;
 
@@ -23,8 +25,8 @@ const structuredData = {
   '@type': 'BlogPosting',
   headline: data.title,
   description: data.description,
-  datePublished: data.pubDate.toISOString(),
-  dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
+  ...(data.pubDate ? { datePublished: data.pubDate.toISOString() } : {}),
+  ...(modifiedDate ? { dateModified: modifiedDate.toISOString() } : {}),
   author: { '@type': 'Person', name: siteConfig.name },
   publisher: { '@type': 'Person', name: siteConfig.name },
   mainEntityOfPage: canonical,
@@ -38,8 +40,8 @@ const structuredData = {
   title={data.title}
   description={data.description}
   type="article"
-  publishedTime={data.pubDate.toISOString()}
-  modifiedTime={(data.updatedDate ?? data.pubDate).toISOString()}
+  publishedTime={data.pubDate?.toISOString()}
+  modifiedTime={modifiedDate?.toISOString()}
   structuredData={structuredData}
 >
   <div class="writing-page">
@@ -53,8 +55,12 @@ const structuredData = {
 
           <div class="post-meta">
             <span class="post-space-label">{writingSpace.eyebrow}</span>
-            <span class="dot" aria-hidden="true"></span>
-            <time datetime={isoDate(data.pubDate)}>{formatDate(data.pubDate)}</time>
+            {displayDate && (
+              <span class="post-meta-date">
+                <span class="dot" aria-hidden="true"></span>
+                <time datetime={isoDate(displayDate)}>{formatDate(displayDate)}</time>
+              </span>
+            )}
             <span class="dot" aria-hidden="true"></span>
             <span>{minutes} min read</span>
             {data.updatedDate && (

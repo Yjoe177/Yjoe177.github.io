@@ -8,9 +8,40 @@ interface PostQuery {
 }
 
 /**
- * Returns posts newest first. Production pages call this without overrides so
- * drafts disappear automatically from calendar pages, routes, and RSS.
- * Files beginning with "_" are repository templates, never site content.
+ * Deterministic ordering:
+ * 1. Explicit `order` values first, ascending.
+ * 2. Then actual publication dates, newest first.
+ * 3. Then undated posts by id.
+ *
+ * Cards and article headers may show `displayDate` even when no `pubDate`
+ * exists, but `displayDate` is never treated as a publication timestamp.
+ */
+function comparePosts(a: BlogPost, b: BlogPost): number {
+  const aOrder = a.data.order;
+  const bOrder = b.data.order;
+
+  if (aOrder !== undefined || bOrder !== undefined) {
+    if (aOrder === undefined) return 1;
+    if (bOrder === undefined) return -1;
+    if (aOrder !== bOrder) return aOrder - bOrder;
+  }
+
+  const aTime = a.data.pubDate?.getTime();
+  const bTime = b.data.pubDate?.getTime();
+
+  if (aTime !== undefined && bTime !== undefined && aTime !== bTime) {
+    return bTime - aTime;
+  }
+  if (aTime !== undefined && bTime === undefined) return -1;
+  if (aTime === undefined && bTime !== undefined) return 1;
+
+  return a.id.localeCompare(b.id);
+}
+
+/**
+ * Returns posts in deterministic reading order. Production pages call this
+ * without overrides so drafts disappear automatically from the index, routes,
+ * and RSS. Files beginning with "_" are repository templates, never content.
  */
 export async function getPosts({
   includeDrafts = import.meta.env.DEV,
@@ -21,7 +52,12 @@ export async function getPosts({
     return true;
   });
 
-  return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return posts.sort(comparePosts);
+}
+
+/** Visible date: a meaningful display date first, then actual publication date. */
+export function getPostDisplayDate(post: BlogPost): Date | undefined {
+  return post.data.displayDate ?? post.data.pubDate;
 }
 
 /** Word-count estimate at roughly 200 words per minute. */
@@ -49,14 +85,4 @@ export function formatDate(date: Date, style: 'long' | 'short' = 'long'): string
 
 export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
-}
-
-/** Groups posts by publication year, preserving newest-first order. */
-export function groupByYear(posts: BlogPost[]): Array<{ year: number; posts: BlogPost[] }> {
-  const groups = new Map<number, BlogPost[]>();
-  for (const post of posts) {
-    const year = post.data.pubDate.getUTCFullYear();
-    groups.set(year, [...(groups.get(year) ?? []), post]);
-  }
-  return [...groups.entries()].map(([year, entries]) => ({ year, posts: entries }));
 }

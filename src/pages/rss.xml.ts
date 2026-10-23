@@ -14,8 +14,8 @@ export async function GET(context: APIContext) {
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
-      pubDate: post.data.pubDate,
       link: `/blog/${post.id}/`,
+      ...(post.data.pubDate ? { pubDate: post.data.pubDate } : {}),
     })),
     customData: `<language>en-US</language><copyright>© ${new Date().getUTCFullYear()} ${siteConfig.name}</copyright>`,
   });

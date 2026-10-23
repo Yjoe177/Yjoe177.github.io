@@ -47,7 +47,7 @@ adds a page automatically.
 The personal writing space is titled **Between the Lines** but keeps the
 `/blog/` URL and the existing Astro content collection. There are **no
 categories** and no category filtering. Every published piece appears in one
-reverse-chronological list.
+deterministic reading order.
 
 ### Create a post
 
@@ -64,10 +64,12 @@ reverse-chronological list.
 ---
 title: 'On Attention'
 description: 'A short summary that appears in the index, RSS, and search results.'
-pubDate: 2026-11-01
-updatedDate: 2026-11-03   # optional
-tags: ['Attention', 'Notes'] # optional keywords, not categories
-draft: false               # optional, defaults to false
+# pubDate: 2026-11-01          # optional actual publication timestamp
+# displayDate: 2026-07-17      # optional visible date, not a publish timestamp
+# order: 10                    # optional manual order, lower first
+updatedDate: 2026-11-03        # optional
+tags: ['Attention', 'Notes']  # optional keywords, not categories
+draft: false                  # optional, defaults to false
 cover: '/images/blog/my-cover.jpg' # optional
 coverAlt: 'A description of the cover image' # required if cover is used
 ---
@@ -79,8 +81,10 @@ coverAlt: 'A description of the cover image' # required if cover is used
 | --- | --- | --- |
 | `title` | Yes | Max 140 characters. |
 | `description` | Yes | Max 320 characters. Used in cards, RSS, and SEO. |
-| `pubDate` | Yes | `YYYY-MM-DD`. Dates are treated as UTC. |
-| `updatedDate` | No | Shows an “Updated” label on the piece. |
+| `pubDate` | No | Actual publication timestamp (`YYYY-MM-DD`). Used for sorting, RSS, and `article:published_time`/JSON-LD. Omit it when no real publication timestamp exists. |
+| `displayDate` | No | A meaningful visible date such as a birthday (`YYYY-MM-DD`). It appears on cards and the article page but is **never** used as the publication timestamp in RSS or SEO. |
+| `order` | No | Integer manual order; lower numbers appear first. Use it to preserve a deliberate sequence for undated pieces. |
+| `updatedDate` | No | Shows an “Updated” label and can supply `dateModified`; it does not create a publication date. |
 | `tags` | No | Optional free-form keywords; they do not create filters or categories. |
 | `draft` | No | `true` hides the piece from production builds and RSS. |
 | `cover` | No | Public path, e.g. `/images/blog/cover.jpg`. |
@@ -88,6 +92,21 @@ coverAlt: 'A description of the cover image' # required if cover is used
 
 Reading time is calculated automatically from the body (about 200 words per
 minute). You do not add it manually.
+
+### Dates and ordering
+
+- `pubDate` is the only field treated as an actual publication timestamp.
+- `displayDate` is shown to readers but is not used in RSS or SEO metadata. It
+  does not claim the piece was published on that day.
+- Omit both fields for a completely undated piece. No artificial date is
+  generated.
+- Sorting is deterministic: explicit `order` first (ascending), then actual
+  `pubDate` newest first, then entry ID.
+- The four current posts use explicit `order` 1–4 to preserve their supplied
+  sequence. *Through My 19th Year* is second and shows July 17, 2026 via
+  `displayDate`; the other three have no date.
+- To insert a piece at a specific position, give it an `order` value between
+  neighboring posts.
 
 ### Drafts
 
@@ -98,8 +117,9 @@ minute). You do not add it manually.
 
 ### Starter templates
 
-The published writing space is intentionally empty. Three unloaded templates
-live outside the content collection in `src/content/_examples/blog/`:
+Four published pieces currently live in `src/content/blog/`. Three unloaded
+templates remain outside the content collection in
+`src/content/_examples/blog/`:
 
 - `post-template.mdx` — an essay-style entry.
 - `research-note-template.mdx` — demonstrates headings, callouts, code, tables,
@@ -117,7 +137,8 @@ with an underscore.
 ### Listing, filters, and legacy category URLs
 
 - `/blog/` is the only listing. It has no category filters or category cards.
-- Every published piece shows its title, date, description, and reading time.
+- Every published piece shows its title, description, and reading time. A date is
+  shown only when `displayDate` or `pubDate` exists.
 - The old `/blog/category/thoughts/`, `/stories/`, `/research-notes/`, and
   `/life/` URLs redirect to `/blog/` via `astro.config.mjs`.
 - Do not recreate category routes or re-add a `category` field.
@@ -441,8 +462,9 @@ links: [
   real.
 - `handle` is optional and used on the Contact page.
 
-Current confirmed links: GitHub (`Yjoe177`), LinkedIn (`youssef-amr`), and the
-Westlake academic email. Google Scholar, ORCID, and X remain empty.
+Current confirmed links: GitHub (`Yjoe177`), LinkedIn
+(`youssef-amr-9b2541290`), and the Westlake academic email. Google Scholar,
+ORCID, and X remain empty.
 
 ### CV
 
@@ -524,7 +546,10 @@ Keep the claims consistent with the rest of the site.
 - [ ] Confirm the two CV PDFs are the intended public versions.
 - [ ] Confirm the two redacted CV PDFs open and do not contain a phone number.
 - [ ] Confirm the portrait crop and alt text.
-- [ ] Optionally write the first Between the Lines piece (the empty state is launch-ready).
+- [ ] Confirm only *Through My 19th Year* displays July 17, 2026.
+- [ ] Confirm the other three posts display no date in the index, homepage, or article page.
+- [ ] Confirm RSS/SEO do not treat `displayDate` as a publication timestamp.
+- [ ] Confirm both public CVs use the new LinkedIn URL and no phone number.
 - [ ] Verify every research claim and remove any unverified numbers.
 - [ ] Add real publications only if they exist; leave `_template.md` hidden.
 - [ ] Run `npm run check` (0 errors).

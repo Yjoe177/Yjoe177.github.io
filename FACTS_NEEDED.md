@@ -13,7 +13,7 @@ a plausible guess.
 - Academic record: **2025–26 GPA 3.787; full scholarship recipient**
 - Email: **youssef@westlake.edu.cn**
 - GitHub: **https://github.com/Yjoe177**
-- LinkedIn: **https://www.linkedin.com/in/youssef-amr**
+- LinkedIn: **https://www.linkedin.com/in/youssef-amr-9b2541290/**
 - Research interests: efficient AI, agentic systems, embedded/edge AI, TinyML,
   inference optimization
 - Research experience: **ENCODE Lab** (Supervisor: Prof. Huan Wang), 2025 –
@@ -95,11 +95,12 @@ grant amount against certificates. Those numbers are **not** on the website.
 
 - [ ] If verified and you want them shown, provide the exact figures.
 
-### 7. First Between the Lines piece
+### 7. More Between the Lines writing (optional)
 
-The writing space is intentionally empty and has a designed landing state.
+The writing space currently contains four posts. Additional writing can be
+added at any time.
 
-- [ ] Optional: write or paste the first piece.
+- [ ] Optional: add more pieces.
 
 Where: `src/content/blog/`; see `CONTENT_GUIDE.md`. There are no categories.
 Starter templates are in `src/content/_examples/blog/`.
@@ -126,14 +127,13 @@ The deployment workflow lives at `.github/workflows/deploy.yml`.
 | Gap | Where it appears |
 | --- | --- |
 | No publications | `/publications/` and `/cv/` (honest empty state) |
-| Empty Between the Lines | `/blog/` (designed empty state, not fake posts) |
 | Google Scholar / ORCID / X | Hidden until URLs are supplied |
 | Research project naming/details | Existing TinySSM and Agentic MCU pages |
 
 There are **no visible placeholder notes** on the public pages. The portrait, CV
 downloads, email, GitHub, LinkedIn, education dates, awards, activities, and
-skills are real content. Between the Lines pieces and publications simply do not
-exist yet and are presented as honest empty states.
+skills are real content. Publications do not exist yet and are presented as an
+honest empty state. Four Between the Lines posts are published.
 
 ## Please do not send
 

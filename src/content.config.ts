@@ -12,7 +12,12 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string().min(1).max(140),
     description: z.string().min(1).max(320),
-    pubDate: z.coerce.date(),
+    /** Actual publication timestamp. Optional for undated writing. */
+    pubDate: z.coerce.date().optional(),
+    /** A visible meaningful date that is not a publication timestamp. */
+    displayDate: z.coerce.date().optional(),
+    /** Manual sort order; lower numbers appear first. */
+    order: z.number().int().optional(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),

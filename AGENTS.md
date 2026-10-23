@@ -155,7 +155,16 @@ zero-width box and causes overflow). Do not "simplify" this back to one
    - `getPosts()` also filters entry IDs beginning with `_` (hidden templates).
 4. Dynamic routes use rest params (`[...slug]`) so custom nested IDs work.
 5. Reading time is computed from the raw body, not stored in frontmatter.
-6. Dates are formatted in UTC to avoid local-time off-by-one errors.
+6. Dates are optional:
+   - `pubDate` is the only field treated as an actual publication timestamp; it
+     feeds RSS and SEO when present.
+   - `displayDate` is visible on cards/articles but is **not** a publication
+     timestamp and must not be sent to RSS or `datePublished` metadata.
+   - `order` is an optional manual sort key; lower values appear first.
+   - Sorting: explicit `order`, then actual `pubDate` newest first, then entry
+     ID. Undated posts never receive generated dates.
+   - The four current posts use `order` 1–4; *Through My 19th Year* is second and
+     shows July 17, 2026 via `displayDate`.
 7. Publication files beginning with `_` are hidden templates. Keep the filter in
    `getPublications()` if the folder has no real entries.
 8. Between the Lines uses the `/blog/` URL but has **no categories**. The blog
@@ -253,8 +262,10 @@ field to existing entries (or a default), update the display component, run
 defaults must match the output type (Zod 4).
 
 **New writing:** add a Markdown/MDX file under `src/content/blog/`. Do not add
-a `category` field. Optional tags are keywords only; they do not create filters
-or routes. Remove `draft` when ready and verify `/blog/` and RSS.
+a `category` field. `pubDate` and `displayDate` are optional; use `order` for a
+manual sequence. Optional tags are keywords only; they do not create filters or
+routes. Remove `draft` when ready and verify `/blog/` and RSS. Undated posts
+must not receive invented dates in HTML, RSS, or SEO metadata.
 
 **New academic link:** add it to `src/config/academic.ts`, then reference the
 shared object from data/components. Do not duplicate external URLs.
@@ -279,12 +290,12 @@ npm run check
 npm run build
 ```
 
-A clean build currently generates 10 HTML pages (404, About, Between the Lines,
-Contact, CV, Publications, Research index, 2 research details, and Home) plus
-five legacy category redirect pages. No draft or starter-template routes should
-appear. RSS, robots, and the sitemap are also generated. The loader warning for
-the empty blog or publications collection should not appear because hidden
-`_template.md` entries exist and are filtered out.
+A clean build currently generates 14 HTML pages (the four articles, 404, About,
+Between the Lines, Contact, CV, Publications, Research index, 2 research
+details, and Home) plus five legacy category redirect pages. No draft or
+starter-template routes should appear. The loader warning for an empty
+collection should not appear because hidden `_template.md` entries exist and are
+filtered out.
 
 Manual/automated checks performed for this revision:
 
@@ -299,6 +310,14 @@ Manual/automated checks performed for this revision:
 - Academic links resolve: Huan Wang, ENCODE Lab, Westlake University.
 - Temporary published MDX + draft test: published article rendered, draft route
   and RSS item excluded, tags and reading time rendered, no category markup.
+- Four supplied posts preserve their exact article-body hashes. Only
+  *Through My 19th Year* shows July 17, 2026; the other three render without any
+  visible date. RSS/SEO contain no `pubDate`/`datePublished` for them.
+- The four posts are in supplied zip order via `order` 1–4; *Through My 19th
+  Year* is second in Between the Lines and on the homepage preview.
+- LinkedIn config and both public CV PDFs point to
+  `https://www.linkedin.com/in/youssef-amr-9b2541290/`; the PDFs remain redacted
+  and one-page A4.
 - axe-core audit across representative pages, themes, and widths: 0 violations
   (28 checks).
 - Portrait face detection confirms the cropped face is fully inside the frame
@@ -336,8 +355,10 @@ phone widths.
 - The “Beyond research” section now introduces Between the Lines; there are no
   visible placeholder notes on the public pages.
 - No publications are listed; the site says so explicitly.
-- The Between the Lines space is intentionally empty and uses a designed
-  landing state. Starter templates live outside the published collection.
+- Between the Lines contains four posts. Dates are optional; only *Through My
+  19th Year* shows July 17, 2026, via `displayDate`. No publication dates are
+  invented for the other three. The empty state remains available when no posts
+  are published.
 - Legacy category URLs are static meta-refresh redirects to `/blog/`, not HTTP
   301s, because the site is fully static.
 - Research project naming is unresolved: the site uses TinySSM and Agentic MCU
@@ -348,7 +369,8 @@ phone widths.
   be published.
 - Contact uses email/profile links only; there is no form or backend.
 - No search, comments, analytics, newsletter, or CMS.
-- RSS is valid but empty until a real post is published.
+- RSS is valid and reflects the published writing order. Posts without
+  `pubDate` appear without a generated item date.
 - The social card is a static PNG and must be regenerated after branding
   changes.
 - Only Latin font subsets are self-hosted. Add more subsets if non-Latin content
