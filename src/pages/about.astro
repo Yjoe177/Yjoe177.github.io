@@ -198,19 +198,15 @@ const structuredData = {
         )}
       </section>
 
-      <section class="about-section" aria-labelledby="about-personal">
-        <h2 class="about-section-title" id="about-personal">
-          <span class="about-section-index" aria-hidden="true">08</span>
-          Beyond research
-        </h2>
-        {personalBackground.isPlaceholder ? (
-          <PlaceholderNote label="Placeholder">
-            <p>{personalBackground.text}</p>
-          </PlaceholderNote>
-        ) : (
+      {!personalBackground.isPlaceholder && (
+        <section class="about-section" aria-labelledby="about-personal">
+          <h2 class="about-section-title" id="about-personal">
+            <span class="about-section-index" aria-hidden="true">08</span>
+            Beyond research
+          </h2>
           <p class="about-prose">{personalBackground.text}</p>
-        )}
-      </section>
+        </section>
+      )}
     </div>
 
     <aside class="about-aside" aria-label="At a glance">

@@ -13,9 +13,8 @@ Build and maintain a fast, accessible, static academic and personal website for
 
 1. **Never invent facts.** Do not add publications, awards, dates, metrics,
    titles, affiliations, or social URLs that the owner has not confirmed.
-2. **Preserve placeholders as placeholders.** The site intentionally shows
-   labeled placeholders where information is missing. Do not fill them with
-   plausible guesses.
+2. **Use honest empty states and hide unfinished sections.** Do not fill missing
+   details with plausible guesses.
 3. **Do not publish, push, or deploy without explicit authorization.** Local
    builds, previews, and tests are fine.
 4. **Preserve unrelated existing files.** `opencode.jsonc` is the user's tool
@@ -214,6 +213,8 @@ publications, about, CV, contact, 404, responsive, motion, print.
 - `/rss.xml`, `/robots.txt`, and the sitemap derive from `Astro.site`.
 - `public/.nojekyll` is required for GitHub Pages to serve `_astro/` when
   deploying build output directly.
+- `private/` is gitignored and holds unredacted CV originals; never copy it into
+  `public/`.
 - `BaseLayout` preloads the two main font files. Keep the RSS autodiscovery link.
 
 ## Coding conventions
@@ -290,7 +291,9 @@ Manual/automated checks performed for this revision:
 - axe-core audit across representative pages, themes, and widths: 0 violations.
 - Portrait face detection confirms the cropped face is fully inside the frame
   with 26% headroom and 36–37% side margins.
-- Both CV PDFs are one-page A4 files and are served with `application/pdf`.
+- Both public CV PDFs are one page, A4, and contain no phone number in extracted
+  text, metadata, annotations, or `tel:` links. Text matches the private
+  originals except for the removed phone number.
 - CV print media hides header/footer/actions; the sheet becomes white and
   borderless.
 
@@ -318,15 +321,17 @@ phone widths.
 
 ## Known limitations / intentional omissions
 
-- The personal background paragraph is the only on-page content placeholder.
+- The personal background section is hidden until written; there are no visible
+  placeholder notes on the public pages.
 - No publications are listed; the site says so explicitly.
 - The journal is intentionally empty and uses a designed landing state. Starter
   templates live outside the published collection.
 - Research project naming is unresolved: the site uses TinySSM and Agentic MCU
   Kernel Optimization while the current CV uses TinyMamba and Agentic TinyML.
   Do not rename without owner confirmation.
-- Both public CV PDFs contain a phone number and email. The website does not
-  repeat the phone number; confirm whether redacted PDFs are preferred.
+- The public CV PDFs are recompiled without the phone number. Unredacted
+  originals are preserved privately in `private/cv/` (gitignored) and must not
+  be published.
 - Contact uses email/profile links only; there is no form or backend.
 - No search, comments, analytics, newsletter, or CMS.
 - RSS is valid but empty until a real post is published.

@@ -10,7 +10,7 @@ CSS.
 - Research project pages with structured metadata
 - Publication record separated from ongoing work
 - Journal with categories, drafts, reading time, cover images, and RSS
-- CV page with two downloadable one-page A4 PDFs and a print stylesheet
+- CV page with two downloadable one-page A4 PDFs (phone number redacted)
 - Featured photograph on Home and About
 - Light/dark mode, responsive layout, keyboard-friendly navigation
 - No client framework, no database, no backend
@@ -56,10 +56,11 @@ Open the URL printed by Astro, normally
 .
 ├─ .github/workflows/deploy.yml  # GitHub Pages deployment
 ├─ public/
-│  ├─ cv/                        # Research CV + industry resume PDFs
+│  ├─ cv/                        # Redacted public CV + industry resume PDFs
 │  ├─ fonts/                     # Self-hosted variable fonts + OFL license
 │  ├─ images/                    # Portrait, research covers, social card
 │  └─ .nojekyll                  # GitHub Pages: keep /_astro assets
+├─ private/                      # Gitignored: unredacted CV originals
 ├─ scripts/                      # Portrait + OG image generators
 ├─ src/
 │  ├─ components/                # Reusable UI (header, cards, lists, icons)
@@ -95,8 +96,9 @@ Everything reader-facing is separated from the components.
 | Publications | `src/content/publications/` |
 | News | `src/data/news.ts` |
 | Education, research experience, awards, skills | `src/data/profile.ts` |
-| Research CV PDF | `public/cv/youssef-amr-research-cv.pdf` |
-| Industry resume PDF | `public/cv/youssef-amr-industry-resume.pdf` |
+| Research CV PDF (public, redacted) | `public/cv/youssef-amr-research-cv.pdf` |
+| Industry resume PDF (public, redacted) | `public/cv/youssef-amr-industry-resume.pdf` |
+| Unredacted CV originals (private) | `private/cv/` (gitignored) |
 | Web portrait | `public/images/youssef-amr.jpg` |
 | Original photo source (local only) | `Youssef.jpg` (gitignored) |
 | Social sharing image | `public/images/og-default.svg` → `.png` |
@@ -152,6 +154,7 @@ being hidden by Jekyll.
 The site uses confirmed information from the owner's current CV, GitHub account,
 and photographs. It intentionally does **not** invent publications, metrics, or
 missing personal details. Remaining gaps are tracked in `FACTS_NEEDED.md`.
+There are no visible placeholder notes on public pages.
 
 The journal currently has no published entries; the landing page is a designed
 empty state. Two rich starter templates and one draft template live outside the

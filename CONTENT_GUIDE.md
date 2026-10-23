@@ -8,8 +8,8 @@ need to touch layouts or CSS to publish a post, project, or update.
 
 1. **Only publish confirmed information.** Do not add guessed dates, metrics,
    awards, publications, titles, or profile URLs.
-2. **Use placeholders when something is unknown.** The site has explicit
-   placeholder notes, badges, and an empty-state design. Empty is better than
+2. **Use honest empty states and hidden sections instead of guesses.** Where a
+   detail is missing, leave it out or mark it clearly. Empty is better than
    invented.
 3. **Keep claims verifiable.** For research, report results only when they have
    been measured and can be reproduced. Descriptive, hedged language is fine.
@@ -365,7 +365,7 @@ export const awards: TimelineEntry[] = [
 ```
 
 The same shape applies to `activities` and `service`. Empty arrays are fine:
-the About and CV pages show honest placeholders.
+the About and CV pages show honest empty states.
 
 Competitiveness statistics and grant amounts were intentionally omitted from
 the current entries because the CV package notes that they should be verified
@@ -391,7 +391,8 @@ export const personalBackground = {
 };
 ```
 
-While `isPlaceholder` is `true`, the About page displays a labeled placeholder.
+While `isPlaceholder` is `true`, the “Beyond research” section is hidden
+entirely rather than showing an unfinished placeholder.
 
 ---
 
@@ -409,7 +410,7 @@ links: [
 ],
 ```
 
-- An empty `email` hides email links and shows a placeholder on Contact and CV.
+- An empty `email` hides email links on Contact, footer, and CV.
 - Links with `href: ''` are filtered out completely.
 - Only add profiles you actually have. Do not add placeholder URLs that look
   real.
@@ -437,9 +438,14 @@ cv: {
 3. Keep `src/data/profile.ts` in sync with the PDF content.
 4. Do not add a placeholder PDF as a downloadable CV.
 
-Both PDFs include a phone number and email. They are intentionally public
-downloads, but the website itself does not repeat the phone number. If a
-redacted web version is preferred, replace the PDFs with redacted builds.
+The public PDFs were rebuilt from the LaTeX sources with the phone number
+removed from the contact line. All other text is unchanged. The unredacted
+originals are preserved privately in `private/cv/` (gitignored) and in the
+original LaTeX package. Do not publish the private originals.
+
+The CV page links only to the redacted public copies. If you update the CV,
+rebuild redacted versions from the LaTeX source rather than editing the PDF
+visually.
 
 The `/cv/` page can also be printed to PDF from the browser as a fallback; its
 print stylesheet hides navigation and chrome.
@@ -491,7 +497,7 @@ Keep the claims consistent with the rest of the site.
 - [ ] Confirm no `draft: true` content is meant to be public.
 - [ ] Confirm the email and profile URLs are current.
 - [ ] Confirm the two CV PDFs are the intended public versions.
-- [ ] Consider whether the phone number in the PDFs should be redacted.
+- [ ] Confirm the two redacted CV PDFs open and do not contain a phone number.
 - [ ] Confirm the portrait crop and alt text.
 - [ ] Add the personal background paragraph.
 - [ ] Write a first real journal entry (the empty state is launch-ready).

@@ -28,6 +28,9 @@ third-party stock imagery.
 
 The portrait at `public/images/youssef-amr.jpg` is a web-optimized crop of a
 photograph supplied by the site owner. The untouched original (`Youssef.jpg`) is
-kept locally and is intentionally excluded from the public repository. The
-research CV and industry resume PDFs were supplied by the owner and are
-published with permission.
+kept locally and is intentionally excluded from the public repository.
+
+The research CV and industry resume PDFs were supplied by the owner and are
+published with permission. The public copies were recompiled from the owner's
+LaTeX sources with the phone number removed; full-content originals are kept
+privately and are not in the public repository.

@@ -40,3 +40,6 @@ opencode.jsonc
 # Original photograph source. The web-optimized portrait is committed at
 # public/images/youssef-amr.jpg; the untouched original remains local.
 /Youssef.jpg
+
+# Private originals (e.g. unredacted CV PDFs) must never be published.
+private/

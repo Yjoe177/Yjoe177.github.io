@@ -34,16 +34,16 @@ a plausible guess.
 
 ## Remaining information
 
-### 1. Personal background paragraph
+### 1. Personal background paragraph (optional)
 
-The only visible content placeholder left on the public site is “Beyond
-research” on the About page.
+The unfinished “Beyond research” section is now hidden entirely. It is not shown
+as a placeholder.
 
-- [ ] A short first-person paragraph: where you are from, what brought you to
-  AI, and what you enjoy outside research.
+- [ ] If you want it published, provide a short first-person paragraph: where
+  you are from, what brought you to AI, and what you enjoy outside research.
 
 Where: `personalBackground` in `src/data/profile.ts`. Set
-`isPlaceholder: false` when filled.
+`isPlaceholder: false` after adding the paragraph; the section will then appear.
 
 ### 2. Research naming and details
 
@@ -76,15 +76,17 @@ Where: copy `src/content/publications/_template.md` to a normal filename.
 
 Where: `src/config/site.ts`. Empty links are hidden.
 
-### 5. Phone number in public CVs
+### 5. Phone number in CVs
 
-Both public PDFs include a phone number and email.
+The public PDFs have been rebuilt from the LaTeX sources without the phone
+number. The unredacted originals are preserved privately in `private/cv/`
+(gitignored) and in the original LaTeX package.
 
-- [ ] Confirm that publishing the phone number on the open web is acceptable, or
-  provide redacted PDFs.
+- [ ] No action needed. If you ever want a different contact line on the web
+  CVs, rebuild from the LaTeX source.
 
-The website pages do not repeat the phone number. The CV page links directly to
-the provided PDFs.
+The website does not repeat the phone number, and the public PDFs do not contain
+it in text, metadata, annotations, or `tel:` links.
 
 ### 6. Award statistics
 
@@ -126,14 +128,16 @@ verified yet. The deployment workflow is ready at
 
 | Gap | Where it appears |
 | --- | --- |
-| Personal background | About → “Beyond research” |
+| Personal background | Hidden; no public placeholder |
 | No publications | `/publications/` and `/cv/` (honest empty state) |
 | Empty journal | `/blog/` (designed empty state, not fake posts) |
 | Google Scholar / ORCID / X | Hidden until URLs are supplied |
 | Research project naming/details | Existing TinySSM and Agentic MCU pages |
 
-The portrait, CV downloads, email, GitHub, LinkedIn, education dates, awards,
-activities, and skills are now real content.
+There are **no visible placeholder notes** on the public pages. The portrait, CV
+downloads, email, GitHub, LinkedIn, education dates, awards, activities, and
+skills are real content. Journal entries and publications simply do not exist yet
+and are presented as honest empty states.
 
 ## Please do not send
 
@@ -141,4 +145,5 @@ activities, and skills are now real content.
 - Unverifiable performance numbers.
 - Private collaborator information without permission.
 - A phone number or home address for the website itself unless you intend it to
-  be public. The CV PDFs already contain a phone number; see section 5.
+  be public. The public CV PDFs have been redacted; do not send the number for
+  the website.
