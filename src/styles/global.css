@@ -1748,7 +1748,7 @@ hr {
 }
 
 .btl-hero::before {
-  content: 'â€œ';
+  content: "\201C";
   position: absolute;
   top: -2.8rem;
   left: 50%;
