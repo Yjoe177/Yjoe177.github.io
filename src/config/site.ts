@@ -8,6 +8,9 @@
  * in FACTS_NEEDED.md; do not replace them with guesses.
  */
 
+import { academicLinks } from './academic';
+import { writingSpace } from './writing';
+
 export interface NavItem {
   label: string;
   href: string;
@@ -24,8 +27,8 @@ export const siteConfig = {
   initials: 'YA',
 
   role: 'AI Undergraduate',
-  affiliation: 'Westlake University',
-  affiliationUrl: 'https://www.westlake.edu.cn/',
+  affiliation: academicLinks.westlakeUniversity.name,
+  affiliationUrl: academicLinks.westlakeUniversity.href,
   location: 'Hangzhou, China',
 
   /** Short label used in the header and footer. */
@@ -102,7 +105,7 @@ export const siteConfig = {
   nav: [
     { label: 'Research', href: '/research/' },
     { label: 'Publications', href: '/publications/' },
-    { label: 'Journal', href: '/blog/' },
+    { label: writingSpace.title, href: '/blog/' },
     { label: 'About', href: '/about/' },
     { label: 'CV', href: '/cv/' },
     { label: 'Contact', href: '/contact/' },

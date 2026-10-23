@@ -1,6 +1,5 @@
 ---
 import type { BlogPost } from '../lib/posts';
-import { categorySlug } from '../lib/categories';
 import { formatDate, readingTime } from '../lib/posts';
 import Icon from './Icon.astro';
 
@@ -20,8 +19,6 @@ const minutes = readingTime(post.body);
     </h3>
     <div class="post-preview-meta">
       <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, 'short')}</time>
-      <span aria-hidden="true">·</span>
-      <a href={`/blog/category/${categorySlug(post.data.category)}/`}>{post.data.category}</a>
       <span aria-hidden="true">·</span>
       <span>{minutes} min read</span>
       {post.data.draft && <span class="badge badge--draft">Draft</span>}

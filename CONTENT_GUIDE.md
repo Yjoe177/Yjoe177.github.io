@@ -20,14 +20,15 @@ need to touch layouts or CSS to publish a post, project, or update.
 
 | Content | Location |
 | --- | --- |
-| Journal posts | `src/content/blog/*.{md,mdx}` |
-| Journal templates (not built) | `src/content/_examples/blog/` |
+| Between the Lines posts | `src/content/blog/*.{md,mdx}` |
+| Writing starter templates (not built) | `src/content/_examples/blog/` |
 | Research projects | `src/content/research/*.{md,mdx}` |
 | Publications | `src/content/publications/*.{md,mdx}` |
 | News items | `src/data/news.ts` |
 | Education, research experience, awards, activities, skills | `src/data/profile.ts` |
 | Name, bio, email, navigation, interests | `src/config/site.ts` |
-| Journal categories | `src/lib/categories.ts` |
+| Writing-space title and introduction | `src/config/writing.ts` |
+| Academic external links | `src/config/academic.ts` |
 | Research CV PDF | `public/cv/youssef-amr-research-cv.pdf` |
 | Industry resume PDF | `public/cv/youssef-amr-industry-resume.pdf` |
 | Web portrait | `public/images/youssef-amr.jpg` |
@@ -41,42 +42,47 @@ adds a page automatically.
 
 ---
 
-## Journal posts
+## Between the Lines posts
+
+The personal writing space is titled **Between the Lines** but keeps the
+`/blog/` URL and the existing Astro content collection. There are **no
+categories** and no category filtering. Every published piece appears in one
+reverse-chronological list.
 
 ### Create a post
 
 1. Add a file in `src/content/blog/`, for example
-   `src/content/blog/why-i-write.md` or `.mdx`.
-2. Use lowercase, hyphenated filenames. The filename becomes the URL:
-   `why-i-write.md` → `/blog/why-i-write/`.
-3. Add frontmatter and write the body in Markdown.
+   `src/content/blog/on-attention.md` or `.mdx`.
+2. Use a lowercase, hyphenated filename. The filename becomes the URL:
+   `on-attention.md` → `/blog/on-attention/`.
+3. Add frontmatter and write the body in Markdown or MDX.
 4. Run `npm run dev` and open `/blog/`.
 
 ### Frontmatter reference
 
 ```yaml
 ---
-title: 'Why I Write'
+title: 'On Attention'
 description: 'A short summary that appears in the index, RSS, and search results.'
 pubDate: 2026-11-01
 updatedDate: 2026-11-03   # optional
-category: 'Thoughts'       # exact category name
-tags: ['Writing', 'Notes'] # optional
+tags: ['Attention', 'Notes'] # optional keywords, not categories
 draft: false               # optional, defaults to false
 cover: '/images/blog/my-cover.jpg' # optional
 coverAlt: 'A description of the cover image' # required if cover is used
 ---
 ```
 
+`category` is intentionally **not** part of the schema. Do not add one.
+
 | Field | Required | Notes |
 | --- | --- | --- |
 | `title` | Yes | Max 140 characters. |
 | `description` | Yes | Max 320 characters. Used in cards, RSS, and SEO. |
 | `pubDate` | Yes | `YYYY-MM-DD`. Dates are treated as UTC. |
-| `updatedDate` | No | Shows an “Updated” label on the post. |
-| `category` | Yes | One of `Thoughts`, `Stories`, `Research Notes`, `Life`. |
-| `tags` | No | Array of short strings; shown at the end of the post. |
-| `draft` | No | `true` hides the post from production builds and RSS. |
+| `updatedDate` | No | Shows an “Updated” label on the piece. |
+| `tags` | No | Optional free-form keywords; they do not create filters or categories. |
+| `draft` | No | `true` hides the piece from production builds and RSS. |
 | `cover` | No | Public path, e.g. `/images/blog/cover.jpg`. |
 | `coverAlt` | If cover | Describe the image for screen readers. |
 
@@ -86,14 +92,14 @@ minute). You do not add it manually.
 ### Drafts
 
 - `draft: true` → visible at `http://localhost:4321` with a **Draft** badge.
-- Production builds, category listings, and RSS exclude drafts entirely.
+- Production builds, the writing index, and RSS exclude drafts entirely.
 - A draft's route is not generated in production.
 - Remove the `draft` line, or set it to `false`, to publish.
 
 ### Starter templates
 
-The published journal is intentionally empty. Three unloaded templates are kept
-outside the content collection in `src/content/_examples/blog/`:
+The published writing space is intentionally empty. Three unloaded templates
+live outside the content collection in `src/content/_examples/blog/`:
 
 - `post-template.mdx` — an essay-style entry.
 - `research-note-template.mdx` — demonstrates headings, callouts, code, tables,
@@ -108,22 +114,13 @@ filename, replace the content, and remove `draft: true` when ready. The
 with `_`) and is never published. Do not give a real post a filename beginning
 with an underscore.
 
-### Categories
+### Listing, filters, and legacy category URLs
 
-Categories are defined in `src/lib/categories.ts`:
-
-```ts
-{ name: 'Thoughts', slug: 'thoughts', description: '...' }
-```
-
-- The content schema and category routes update automatically when you add a
-  category.
-- Use the exact `name` in post frontmatter.
-- The `slug` controls `/blog/category/<slug>/`.
-- Renaming a category means updating every existing post that uses the old name.
-- Categories with no posts still have a page and show an empty state.
-- To remove a category, first move its posts to another category, then remove it
-  from the list. Restart the dev server if route types look stale.
+- `/blog/` is the only listing. It has no category filters or category cards.
+- Every published piece shows its title, date, description, and reading time.
+- The old `/blog/category/thoughts/`, `/stories/`, `/research-notes/`, and
+  `/life/` URLs redirect to `/blog/` via `astro.config.mjs`.
+- Do not recreate category routes or re-add a `category` field.
 
 ### Images and covers
 
@@ -149,9 +146,9 @@ import Callout from '../../components/Callout.astro';
 </Callout>
 ```
 
-Standard Markdown is enough for most posts. Avoid adding interactive components
-unless they are genuinely necessary; the journal is intentionally static and
-fast.
+Standard Markdown is enough for most pieces. Avoid adding interactive
+components unless they are genuinely necessary; Between the Lines is
+intentionally static and fast.
 
 ### Links and formatting
 
@@ -168,7 +165,7 @@ fast.
 ### Remove a post
 
 Delete the Markdown file. Its route, index entry, and RSS item disappear on the
-next build. If other posts link to it, update those links.
+next build. If other pieces link to it, update those links.
 
 ---
 
@@ -324,7 +321,7 @@ export const news: NewsItem[] = [
 
 ---
 
-## Education, awards, activities, and personal background
+## Education, research experience, awards, and activities
 
 Edit `src/data/profile.ts`.
 
@@ -334,6 +331,7 @@ Edit `src/data/profile.ts`.
 export const education: EducationEntry[] = [
   {
     institution: 'Westlake University',
+    institutionUrl: 'https://en.westlake.edu.cn/',
     degree: 'B.S. in Artificial Intelligence',
     location: 'Hangzhou, China',
     period: 'Aug 2025 – Jun 2029',
@@ -342,14 +340,27 @@ export const education: EducationEntry[] = [
 ];
 ```
 
-`isPlaceholder: true` adds a “Dates pending” badge on the About page if dates
-are ever temporarily unknown.
+`institutionUrl` makes the university name clickable on About and the online CV.
 
 ### Research experience
 
-`researchExperience` has the same shape as an activity entry and powers the
-Research experience section on About and CV. Keep supervisors and lab names
-accurate.
+```ts
+export const researchExperience: ResearchExperienceEntry[] = [
+  {
+    title: 'Undergraduate Researcher',
+    organization: 'ENCODE Lab',
+    organizationUrl: 'https://westlake-encode-lab.github.io/',
+    institution: 'Westlake University',
+    institutionUrl: 'https://en.westlake.edu.cn/',
+    supervisor: { name: 'Prof. Huan Wang', url: 'https://huanwang.tech/' },
+    period: '2025 – Present',
+    description: 'Factual project description.',
+  },
+];
+```
+
+Use `src/config/academic.ts` for shared academic URLs instead of repeating strings.
+The supervisor and lab names are rendered as real links on About and CV.
 
 ### Awards, activities, service
 
@@ -357,7 +368,8 @@ accurate.
 export const awards: TimelineEntry[] = [
   {
     title: 'Award name',
-    organization: 'Awarding body',
+    organization: 'Westlake University',
+    organizationUrl: 'https://en.westlake.edu.cn/',
     period: '2026',
     description: 'One or two factual sentences.',
   },
@@ -365,7 +377,8 @@ export const awards: TimelineEntry[] = [
 ```
 
 The same shape applies to `activities` and `service`. Empty arrays are fine:
-the About and CV pages show honest empty states.
+the About and CV pages show honest empty states. Optional `organizationUrl`
+makes the organization name clickable.
 
 Competitiveness statistics and grant amounts were intentionally omitted from
 the current entries because the CV package notes that they should be verified
@@ -382,17 +395,29 @@ export const skillGroups: SkillGroup[] = [
 
 These appear on the CV page. Keep them consistent with the downloadable PDFs.
 
-### Personal background
+### Beyond research
+
+The About page’s “Beyond research” paragraph introduces Between the Lines. Its
+copy lives in `src/config/writing.ts` as `writingSpace.aboutNote`; edit it there.
+There is no longer a personal-background placeholder object.
+
+---
+
+## Academic links
+
+Shared academic destinations live in `src/config/academic.ts`:
 
 ```ts
-export const personalBackground = {
-  isPlaceholder: false,
-  text: 'A short first-person paragraph about your background and interests.',
-};
+export const academicLinks = {
+  westlakeUniversity: { name: 'Westlake University', href: 'https://en.westlake.edu.cn/' },
+  encodeLab: { name: 'ENCODE Lab', href: 'https://westlake-encode-lab.github.io/' },
+  huanWang: { name: 'Prof. Huan Wang', href: 'https://huanwang.tech/' },
+} as const;
 ```
 
-While `isPlaceholder` is `true`, the “Beyond research” section is hidden
-entirely rather than showing an unfinished placeholder.
+Use these objects in components and data rather than hardcoding URLs. The
+homepage, About, and online CV consume the same links. The downloadable CV PDFs
+are unchanged and are generated separately from LaTeX.
 
 ---
 
@@ -499,17 +524,17 @@ Keep the claims consistent with the rest of the site.
 - [ ] Confirm the two CV PDFs are the intended public versions.
 - [ ] Confirm the two redacted CV PDFs open and do not contain a phone number.
 - [ ] Confirm the portrait crop and alt text.
-- [ ] Add the personal background paragraph.
-- [ ] Write a first real journal entry (the empty state is launch-ready).
+- [ ] Optionally write the first Between the Lines piece (the empty state is launch-ready).
 - [ ] Verify every research claim and remove any unverified numbers.
 - [ ] Add real publications only if they exist; leave `_template.md` hidden.
 - [ ] Run `npm run check` (0 errors).
 - [ ] Run `npm run build` (all routes generated).
 - [ ] Run `npm run preview` and check the production output, including:
       - `/`, `/research/`, both project pages
-      - `/publications/`, `/blog/`, each category (empty state)
+      - `/publications/`, `/blog/` (the single writing index)
       - `/about/`, `/cv/`, `/contact/`, `/rss.xml`, `/robots.txt`, `/404.html`
 - [ ] Confirm drafts and templates are absent from the production build.
+- [ ] Confirm old category URLs redirect to `/blog/`.
 - [ ] Confirm internal links, PDFs, the portrait, and images return 200.
 - [ ] Check light and dark mode, desktop and a narrow phone width.
 - [ ] Confirm both CV PDFs open.
@@ -521,9 +546,9 @@ Keep the claims consistent with the rest of the site.
 ## Troubleshooting
 
 **The build fails with a content schema error.**
-Check the exact field names, types, and category names in
-`src/content.config.ts`. Dates must be `YYYY-MM-DD`; `tags` and `authors` must be
-arrays; `year` must be a number.
+Check the exact field names and types in `src/content.config.ts`. Dates must be
+`YYYY-MM-DD`; `tags` and `authors` must be arrays; `year` must be a number.
+Writing entries must not include a `category` field.
 
 **A draft does not appear in the built site.**
 That is intentional. Drafts only appear during `npm run dev`.
@@ -538,9 +563,9 @@ Only the hidden `_template.md` exists. Add a real publication or copy the
 template. A benign loader warning appears if the folder has no files at all;
 the hidden template prevents that.
 
-**My new category is missing.**
-Add it to `src/lib/categories.ts`, restart the dev server, and update posts to
-use the exact new name.
+**An old category URL is missing.**
+The four former category URLs are configured to redirect to `/blog/` in
+`astro.config.mjs`. Do not add new category routes.
 
 **An image is broken.**
 Use a path starting with `/images/...` and confirm the file exists under
@@ -571,5 +596,5 @@ That is the configured production URL, including in local preview. Override
 - Use “ongoing” and “exploratory” honestly.
 - Keep paragraphs short enough to read on a phone.
 - Link to sources rather than repeating claims without context.
-- Use the journal for unfinished ideas; use research pages for structured
+- Use Between the Lines for unfinished ideas; use research pages for structured
   project records.

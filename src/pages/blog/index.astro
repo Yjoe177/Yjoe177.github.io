@@ -1,7 +1,8 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogIndex from '../../components/BlogIndex.astro';
 import { siteConfig } from '../../config/site';
+import { writingSpace } from '../../config/writing';
 import { getPosts } from '../../lib/posts';
 
 const posts = await getPosts({ includeDrafts: import.meta.env.DEV });
@@ -10,23 +11,50 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: `${siteConfig.name} — Journal`,
-  description:
-    'Essays, stories, research notes, and personal writing by Youssef Amr.',
+  name: `${siteConfig.name} — ${writingSpace.title}`,
+  description: writingSpace.description,
   url: canonical,
   author: { '@type': 'Person', name: siteConfig.name },
 };
 ---
 
-<PageLayout
-  title="Journal"
-  eyebrow="Writing & notes"
-  lede="Essays, stories, research notes, and the occasional update from life. A slower corner of the site, organized by when it was written."
-  pageClass="journal-page"
-  description="The personal journal of Youssef Amr: thoughts, stories, research notes, and life."
+<BaseLayout
+  title={writingSpace.title}
+  description={writingSpace.description}
   structuredData={structuredData}
 >
-  <div class="container journal-index-wrap">
-    <BlogIndex posts={posts} />
+  <div class="writing-page btl-page">
+    <header class="btl-hero">
+      <div class="container btl-hero-inner">
+        <p class="eyebrow">{writingSpace.eyebrow}</p>
+        <h1 class="btl-title">
+          {writingSpace.title}
+          <span class="btl-sparkle" aria-hidden="true">{writingSpace.emoji}</span>
+        </h1>
+
+        <div class="btl-intro">
+          <p class="btl-lede">“{writingSpace.introLead}”</p>
+          {writingSpace.introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        <div class="btl-detail" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <section class="container btl-writing" aria-labelledby="all-writing">
+      <div class="btl-writing-head">
+        <h2 class="btl-writing-title" id="all-writing">All writing</h2>
+        {posts.length > 0 && (
+          <span class="btl-writing-count">
+            {posts.length} {posts.length === 1 ? 'piece' : 'pieces'}
+          </span>
+        )}
+      </div>
+      <BlogIndex posts={posts} />
+    </section>
   </div>
-</PageLayout>
+</BaseLayout>

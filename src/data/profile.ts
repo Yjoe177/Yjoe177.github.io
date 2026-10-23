@@ -7,21 +7,32 @@
  * FACTS_NEEDED.md before filling any remaining gap.
  */
 
+import { academicLinks } from '../config/academic';
+
 export interface EducationEntry {
   institution: string;
+  institutionUrl?: string;
   degree: string;
   location: string;
   period: string;
   details: string[];
-  isPlaceholder?: boolean;
 }
 
 export interface TimelineEntry {
   title: string;
   organization?: string;
+  organizationUrl?: string;
   period?: string;
   description: string;
-  isPlaceholder?: boolean;
+}
+
+export interface ResearchExperienceEntry extends TimelineEntry {
+  institution?: string;
+  institutionUrl?: string;
+  supervisor?: {
+    name: string;
+    url: string;
+  };
 }
 
 export interface SkillGroup {
@@ -31,7 +42,8 @@ export interface SkillGroup {
 
 export const education: EducationEntry[] = [
   {
-    institution: 'Westlake University',
+    institution: academicLinks.westlakeUniversity.name,
+    institutionUrl: academicLinks.westlakeUniversity.href,
     degree: 'B.S. in Artificial Intelligence',
     location: 'Hangzhou, China',
     period: 'Aug 2025 – Jun 2029',
@@ -42,17 +54,26 @@ export const education: EducationEntry[] = [
   },
 ];
 
-export const researchExperience: TimelineEntry[] = [
+export const researchExperience: ResearchExperienceEntry[] = [
   {
     title: 'Undergraduate Researcher',
-    organization: 'ENCODE Lab, Westlake University',
+    organization: academicLinks.encodeLab.name,
+    organizationUrl: academicLinks.encodeLab.href,
+    institution: academicLinks.westlakeUniversity.name,
+    institutionUrl: academicLinks.westlakeUniversity.href,
+    supervisor: {
+      name: academicLinks.huanWang.name,
+      url: academicLinks.huanWang.href,
+    },
     period: '2025 – Present',
     description:
-      'Supervisor: Prof. Huan Wang. Investigating hardware-aware neural networks on ARM Cortex-M microcontrollers, including architecture, quantization, C/C++ implementation, memory profiling, and host/device verification. Developing reproducible experimentation pipelines that combine structured agent outputs, compiler/build gates, static and semantic checks, automated tests, and MCU measurements.',
+      'Investigating hardware-aware neural networks on ARM Cortex-M microcontrollers, including architecture, quantization, C/C++ implementation, memory profiling, and host/device verification. Developing reproducible experimentation pipelines that combine structured agent outputs, compiler/build gates, static and semantic checks, automated tests, and MCU measurements.',
   },
   {
     title: 'Summer Undergraduate Research Intern',
     organization: 'Westlake Chemistry 2026 Summer Undergraduate Research Internship',
+    institution: academicLinks.westlakeUniversity.name,
+    institutionUrl: academicLinks.westlakeUniversity.href,
     period: 'Summer 2026',
     description:
       "Prof. Yiqin Gao's group · Computational chemistry. Conducted SPONGE molecular-dynamics experiments on 862 TIP3P water molecules and analyzed the oxygen–oxygen radial distribution function to characterize liquid-water structure.",
@@ -69,7 +90,8 @@ export const awards: TimelineEntry[] = [
   },
   {
     title: 'Photon Cup Finalist',
-    organization: 'Westlake University',
+    organization: academicLinks.westlakeUniversity.name,
+    organizationUrl: academicLinks.westlakeUniversity.href,
     period: '2026',
     description:
       'Finalist in the university-level innovation competition with the TinyMamba project.',
@@ -85,7 +107,8 @@ export const awards: TimelineEntry[] = [
 export const activities: TimelineEntry[] = [
   {
     title: 'Teaching Assistant, Pre-college Physics Track',
-    organization: 'Westlake University',
+    organization: academicLinks.westlakeUniversity.name,
+    organizationUrl: academicLinks.westlakeUniversity.href,
     period: '2026',
     description:
       'Supported high-school students with Su–Schrieffer–Heeger (SSH) circuit experiments, oscilloscope measurements, and troubleshooting.',
@@ -126,12 +149,3 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
 ];
-
-/**
- * TODO: replace with a short, first-person paragraph about your background
- * and interests outside research. Nothing has been invented here.
- */
-export const personalBackground = {
-  isPlaceholder: true,
-  text: 'A short personal introduction will go here — where you are from, what brought you to AI, and what you enjoy outside research.',
-};

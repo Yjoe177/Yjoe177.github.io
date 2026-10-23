@@ -67,7 +67,12 @@ const structuredData = {
       <header class="cv-head">
         <div>
           <p class="cv-name">{siteConfig.name}</p>
-          <p class="cv-role">{siteConfig.role} · {siteConfig.affiliation}</p>
+          <p class="cv-role">
+            {siteConfig.role} ·{" "}
+            <a href={siteConfig.affiliationUrl} target="_blank" rel="noopener noreferrer">
+              {siteConfig.affiliation}
+            </a>
+          </p>
         </div>
         <div class="cv-head-meta">
           <span>{siteConfig.location}</span>
@@ -83,7 +88,15 @@ const structuredData = {
         {education.map((entry) => (
           <div class="cv-entry">
             <div class="cv-entry-head">
-              <h3 class="cv-entry-title">{entry.institution}</h3>
+              <h3 class="cv-entry-title">
+                {entry.institutionUrl ? (
+                  <a href={entry.institutionUrl} target="_blank" rel="noopener noreferrer">
+                    {entry.institution}
+                  </a>
+                ) : (
+                  entry.institution
+                )}
+              </h3>
               <span class="cv-entry-date">{entry.period}</span>
             </div>
             <p class="cv-entry-sub">{entry.degree} · {entry.location}</p>
@@ -104,7 +117,37 @@ const structuredData = {
               <h3 class="cv-entry-title">{entry.title}</h3>
               <span class="cv-entry-date">{entry.period}</span>
             </div>
-            {entry.organization && <p class="cv-entry-sub">{entry.organization}</p>}
+            {entry.organization && (
+              <p class="cv-entry-sub">
+                {entry.organizationUrl ? (
+                  <a href={entry.organizationUrl} target="_blank" rel="noopener noreferrer">
+                    {entry.organization}
+                  </a>
+                ) : (
+                  entry.organization
+                )}
+                {entry.institution && (
+                  <span>
+                    {" · "}
+                    {entry.institutionUrl ? (
+                      <a href={entry.institutionUrl} target="_blank" rel="noopener noreferrer">
+                        {entry.institution}
+                      </a>
+                    ) : (
+                      entry.institution
+                    )}
+                  </span>
+                )}
+              </p>
+            )}
+            {entry.supervisor && (
+              <p class="cv-entry-sub">
+                Supervisor:{" "}
+                <a href={entry.supervisor.url} target="_blank" rel="noopener noreferrer">
+                  {entry.supervisor.name}
+                </a>
+              </p>
+            )}
             <p class="cv-entry-desc">{entry.description}</p>
           </div>
         ))}
@@ -147,7 +190,17 @@ const structuredData = {
               <h3 class="cv-entry-title">{award.title}</h3>
               <span class="cv-entry-date">{award.period}</span>
             </div>
-            {award.organization && <p class="cv-entry-sub">{award.organization}</p>}
+            {award.organization && (
+              <p class="cv-entry-sub">
+                {award.organizationUrl ? (
+                  <a href={award.organizationUrl} target="_blank" rel="noopener noreferrer">
+                    {award.organization}
+                  </a>
+                ) : (
+                  award.organization
+                )}
+              </p>
+            )}
             <p class="cv-entry-desc">{award.description}</p>
           </div>
         ))}
@@ -161,7 +214,17 @@ const structuredData = {
               <h3 class="cv-entry-title">{item.title}</h3>
               <span class="cv-entry-date">{item.period}</span>
             </div>
-            {item.organization && <p class="cv-entry-sub">{item.organization}</p>}
+            {item.organization && (
+              <p class="cv-entry-sub">
+                {item.organizationUrl ? (
+                  <a href={item.organizationUrl} target="_blank" rel="noopener noreferrer">
+                    {item.organization}
+                  </a>
+                ) : (
+                  item.organization
+                )}
+              </p>
+            )}
             <p class="cv-entry-desc">{item.description}</p>
           </div>
         ))}

@@ -1,9 +1,9 @@
----
+﻿---
 import BaseLayout from './BaseLayout.astro';
 import type { BlogPost } from '../lib/posts';
 import { formatDate, isoDate, readingTime } from '../lib/posts';
-import { categorySlug } from '../lib/categories';
 import { siteConfig } from '../config/site';
+import { writingSpace } from '../config/writing';
 import Icon from '../components/Icon.astro';
 
 interface Props {
@@ -29,7 +29,6 @@ const structuredData = {
   publisher: { '@type': 'Person', name: siteConfig.name },
   mainEntityOfPage: canonical,
   url: canonical,
-  articleSection: data.category,
   keywords: data.tags.join(', '),
   image: coverUrl,
 };
@@ -43,17 +42,17 @@ const structuredData = {
   modifiedTime={(data.updatedDate ?? data.pubDate).toISOString()}
   structuredData={structuredData}
 >
-  <div class="journal-page">
+  <div class="writing-page">
     <article class="post">
       <div class="container">
         <header class="post-header">
           <a class="post-back" href="/blog/">
             <Icon name="arrow-right" size={13} />
-            Back to the journal
+            Back to {writingSpace.title}
           </a>
 
           <div class="post-meta">
-            <a href={`/blog/category/${categorySlug(data.category)}/`}>{data.category}</a>
+            <span class="post-space-label">{writingSpace.eyebrow}</span>
             <span class="dot" aria-hidden="true"></span>
             <time datetime={isoDate(data.pubDate)}>{formatDate(data.pubDate)}</time>
             <span class="dot" aria-hidden="true"></span>
@@ -96,22 +95,22 @@ const structuredData = {
           </div>
         )}
 
-        <div class="prose prose--journal">
+        <div class="prose prose--writing">
           <slot />
         </div>
 
         {data.tags.length > 0 && (
           <div class="post-tags">
-            <span class="post-tags-label">Filed under</span>
+            <span class="post-tags-label">Tags</span>
             {data.tags.map((tag) => <span class="chip chip--static">{tag}</span>)}
           </div>
         )}
 
         {(previous || next) && (
-          <nav class="post-nav" aria-label="More journal entries">
+          <nav class="post-nav" aria-label="More writing">
             {previous ? (
               <a class="post-nav-link" href={`/blog/${previous.id}/`}>
-                <span class="post-nav-label">Previous entry</span>
+                <span class="post-nav-label">Previous piece</span>
                 <span class="post-nav-title">{previous.data.title}</span>
               </a>
             ) : (
@@ -119,7 +118,7 @@ const structuredData = {
             )}
             {next ? (
               <a class="post-nav-link post-nav-link--next" href={`/blog/${next.id}/`}>
-                <span class="post-nav-label">Next entry</span>
+                <span class="post-nav-label">Next piece</span>
                 <span class="post-nav-title">{next.data.title}</span>
               </a>
             ) : (

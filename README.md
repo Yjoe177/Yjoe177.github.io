@@ -1,15 +1,16 @@
-# Youssef Amr — Academic & Journal Website
+# Youssef Amr — Academic & Writing Website
 
 A fast, static personal website for **Youssef Amr**, AI undergraduate at
-Westlake University. It combines an academic research profile with a personal
-journal, built with Astro 7, TypeScript, content collections, and hand-written
-CSS.
+Westlake University. It combines an academic research profile with **Between
+the Lines**, a personal writing space, built with Astro 7, TypeScript, content
+collections, and hand-written CSS.
 
 - **Production URL:** <https://yjoe177.github.io/>
 - **Target repository:** <https://github.com/Yjoe177/Yjoe177.github.io>
 - Research project pages with structured metadata
 - Publication record separated from ongoing work
-- Journal with categories, drafts, reading time, cover images, and RSS
+- Between the Lines: uncategorized writing, drafts, reading time, covers, RSS
+- Clickable academic links for Westlake University, ENCODE Lab, and Prof. Huan Wang
 - CV page with two downloadable one-page A4 PDFs (phone number redacted)
 - Featured photograph on Home and About
 - Light/dark mode, responsive layout, keyboard-friendly navigation
@@ -65,8 +66,10 @@ Open the URL printed by Astro, normally
 ├─ src/
 │  ├─ components/                # Reusable UI (header, cards, lists, icons)
 │  ├─ config/site.ts             # Identity, contact, navigation, interests
+│  ├─ config/writing.ts          # Between the Lines title and introduction
+│  ├─ config/academic.ts         # Shared academic external links
 │  ├─ content/
-│  │  ├─ blog/                   # Journal entries (.md/.mdx) + hidden template
+│  │  ├─ blog/                   # Between the Lines entries + hidden template
 │  │  ├─ research/               # Research projects (.md/.mdx)
 │  │  ├─ publications/           # Publication entries (.md/.mdx)
 │  │  └─ _examples/blog/         # Unloaded starter templates
@@ -90,8 +93,10 @@ Everything reader-facing is separated from the components.
 | What | Where |
 | --- | --- |
 | Name, role, bio, email, profile links | `src/config/site.ts` |
-| Journal posts | `src/content/blog/` |
-| Journal starter templates | `src/content/_examples/blog/` |
+| Between the Lines title and introduction | `src/config/writing.ts` |
+| Academic external links | `src/config/academic.ts` |
+| Between the Lines posts | `src/content/blog/` |
+| Writing starter templates | `src/content/_examples/blog/` |
 | Research projects | `src/content/research/` |
 | Publications | `src/content/publications/` |
 | News | `src/data/news.ts` |
@@ -104,9 +109,9 @@ Everything reader-facing is separated from the components.
 | Social sharing image | `public/images/og-default.svg` → `.png` |
 
 See **[CONTENT_GUIDE.md](CONTENT_GUIDE.md)** for field-by-field instructions,
-draft behavior, category changes, and a pre-publish checklist. The separate
-**[FACTS_NEEDED.md](FACTS_NEEDED.md)** lists every unconfirmed fact and asset
-still needed from the owner.
+draft behavior, the uncategorized writing workflow, and a pre-publish checklist.
+The separate **[FACTS_NEEDED.md](FACTS_NEEDED.md)** lists every unconfirmed fact
+and asset still needed from the owner.
 
 ## Site URL and SEO
 
@@ -132,15 +137,12 @@ current official Astro setup:
 This is a **user site**, so no Astro `base` path is required. The workflow runs
 on pushes to `main` and can also be started manually.
 
-First deployment:
+Deployment is active:
 
-1. Confirm the GitHub repository has been renamed to
-   `Yjoe177/Yjoe177.github.io`.
-2. Push the local `main` branch.
-3. In the repository, open **Settings → Pages** and choose
-   **GitHub Actions** as the source.
-4. Run the workflow, or push another commit, and wait for deployment.
-5. Open <https://yjoe177.github.io/>.
+1. Pages is configured to use **GitHub Actions**.
+2. Push to `main` (or run the **Deploy to GitHub Pages** workflow manually).
+3. The workflow builds and deploys the `dist/` artifact.
+4. The public site is <https://yjoe177.github.io/>.
 
 If the repository is ever renamed away from `<username>.github.io`, update both
 `astro.config.mjs` and `.github/workflows/deploy.yml`, and configure `base`.
@@ -156,9 +158,11 @@ and photographs. It intentionally does **not** invent publications, metrics, or
 missing personal details. Remaining gaps are tracked in `FACTS_NEEDED.md`.
 There are no visible placeholder notes on public pages.
 
-The journal currently has no published entries; the landing page is a designed
-empty state. Two rich starter templates and one draft template live outside the
-published collection in `src/content/_examples/blog/`.
+The writing space, **Between the Lines**, currently has no published entries;
+the landing page is a designed empty state. Two rich starter templates and one
+draft template live outside the published collection in
+`src/content/_examples/blog/`. Old category URLs redirect to `/blog/`; there is
+no category filtering or taxonomy.
 
 ## Credits
 

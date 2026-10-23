@@ -8,10 +8,10 @@ import {
   activities,
   awards,
   education,
-  personalBackground,
   researchExperience,
   service,
 } from '../data/profile';
+import { writingSpace } from '../config/writing';
 import { getResearch, statusLabels } from '../lib/research';
 
 const research = await getResearch({ includeDrafts: import.meta.env.DEV });
@@ -50,10 +50,11 @@ const structuredData = {
         </h2>
         <p class="about-prose">{siteConfig.bio.long}</p>
         <p class="about-prose">
-          This site collects research notes, longer project write-ups, and a
-          journal for ideas that do not fit into a paper. It is maintained as a
-          static website: the writing lives in plain text, and the design stays
-          out of the way.
+          This site collects research notes, longer project write-ups, and
+          <a class="text-link" href="/blog/">{writingSpace.title}</a>, a space for
+          ideas that do not fit into a paper. It is maintained as a static
+          website: the writing lives in plain text, and the design stays out of
+          the way.
         </p>
       </section>
 
@@ -77,11 +78,18 @@ const structuredData = {
         <div class="timeline">
           {education.map((entry) => (
             <article class="timeline-item">
-              <h3 class="timeline-title">{entry.institution}</h3>
+              <h3 class="timeline-title">
+                {entry.institutionUrl ? (
+                  <a href={entry.institutionUrl} target="_blank" rel="noopener noreferrer">
+                    {entry.institution}
+                  </a>
+                ) : (
+                  entry.institution
+                )}
+              </h3>
               <p class="timeline-org">{entry.degree}</p>
               <p class="timeline-meta">
                 {entry.location} · {entry.period}
-                {entry.isPlaceholder && <span class="badge badge--draft">Dates pending</span>}
               </p>
               {entry.details.length > 0 && (
                 <div class="timeline-desc">
@@ -105,8 +113,38 @@ const structuredData = {
             {researchExperience.map((entry) => (
               <article class="timeline-item">
                 <h3 class="timeline-title">{entry.title}</h3>
-                {entry.organization && <p class="timeline-org">{entry.organization}</p>}
+                {entry.organization && (
+                  <p class="timeline-org">
+                    {entry.organizationUrl ? (
+                      <a href={entry.organizationUrl} target="_blank" rel="noopener noreferrer">
+                        {entry.organization}
+                      </a>
+                    ) : (
+                      entry.organization
+                    )}
+                    {entry.institution && (
+                      <span class="timeline-org-institution">
+                        {" · "}
+                        {entry.institutionUrl ? (
+                          <a href={entry.institutionUrl} target="_blank" rel="noopener noreferrer">
+                            {entry.institution}
+                          </a>
+                        ) : (
+                          entry.institution
+                        )}
+                      </span>
+                    )}
+                  </p>
+                )}
                 {entry.period && <p class="timeline-meta">{entry.period}</p>}
+                {entry.supervisor && (
+                  <p class="timeline-supervisor">
+                    Supervisor:{" "}
+                    <a href={entry.supervisor.url} target="_blank" rel="noopener noreferrer">
+                      {entry.supervisor.name}
+                    </a>
+                  </p>
+                )}
                 <p class="timeline-desc">{entry.description}</p>
               </article>
             ))}
@@ -156,7 +194,17 @@ const structuredData = {
             {awards.map((award) => (
               <article class="timeline-item">
                 <h3 class="timeline-title">{award.title}</h3>
-                {award.organization && <p class="timeline-org">{award.organization}</p>}
+                {award.organization && (
+                  <p class="timeline-org">
+                    {award.organizationUrl ? (
+                      <a href={award.organizationUrl} target="_blank" rel="noopener noreferrer">
+                        {award.organization}
+                      </a>
+                    ) : (
+                      award.organization
+                    )}
+                  </p>
+                )}
                 {award.period && <p class="timeline-meta">{award.period}</p>}
                 <p class="timeline-desc">{award.description}</p>
               </article>
@@ -182,7 +230,17 @@ const structuredData = {
             {involvement.map((item) => (
               <article class="timeline-item">
                 <h3 class="timeline-title">{item.title}</h3>
-                {item.organization && <p class="timeline-org">{item.organization}</p>}
+                {item.organization && (
+                  <p class="timeline-org">
+                    {item.organizationUrl ? (
+                      <a href={item.organizationUrl} target="_blank" rel="noopener noreferrer">
+                        {item.organization}
+                      </a>
+                    ) : (
+                      item.organization
+                    )}
+                  </p>
+                )}
                 {item.period && <p class="timeline-meta">{item.period}</p>}
                 <p class="timeline-desc">{item.description}</p>
               </article>
@@ -198,15 +256,16 @@ const structuredData = {
         )}
       </section>
 
-      {!personalBackground.isPlaceholder && (
-        <section class="about-section" aria-labelledby="about-personal">
-          <h2 class="about-section-title" id="about-personal">
-            <span class="about-section-index" aria-hidden="true">08</span>
-            Beyond research
-          </h2>
-          <p class="about-prose">{personalBackground.text}</p>
-        </section>
-      )}
+      <section class="about-section" aria-labelledby="about-personal">
+        <h2 class="about-section-title" id="about-personal">
+          <span class="about-section-index" aria-hidden="true">08</span>
+          Beyond research
+        </h2>
+        <p class="about-prose">
+          {writingSpace.aboutNote}{" "}
+          <a class="text-link" href="/blog/">{writingSpace.title} {writingSpace.emoji}</a>.
+        </p>
+      </section>
     </div>
 
     <aside class="about-aside" aria-label="At a glance">

@@ -30,20 +30,20 @@ a plausible guess.
   `public/images/youssef-amr.jpg`
 - CVs: `Youssef_Amr_Research_Internship_CV_Classic.pdf` and
   `Youssef_Amr_Industry_Internship_Resume_Classic.pdf`, copied to `public/cv/`
-- Website status: in local development / preparing for launch
+- Website status: live at `https://yjoe177.github.io/`
 
 ## Remaining information
 
 ### 1. Personal background paragraph (optional)
 
-The unfinished “Beyond research” section is now hidden entirely. It is not shown
-as a placeholder.
+The “Beyond research” section now introduces **Between the Lines** and does not
+pretend to be a full personal biography.
 
-- [ ] If you want it published, provide a short first-person paragraph: where
-  you are from, what brought you to AI, and what you enjoy outside research.
+- [ ] Optional: provide a short first-person background paragraph if you want a
+  dedicated personal-biography section later. No placeholder is currently shown.
 
-Where: `personalBackground` in `src/data/profile.ts`. Set
-`isPlaceholder: false` after adding the paragraph; the section will then appear.
+Where: add it to the About page or extend `writingSpace.aboutNote` in
+`src/config/writing.ts`. Do not invent personal details.
 
 ### 2. Research naming and details
 
@@ -95,49 +95,45 @@ grant amount against certificates. Those numbers are **not** on the website.
 
 - [ ] If verified and you want them shown, provide the exact figures.
 
-### 7. First journal entry
+### 7. First Between the Lines piece
 
-The journal is intentionally empty and has a designed landing state.
+The writing space is intentionally empty and has a designed landing state.
 
-- [ ] Optional: write or paste the first real entry.
+- [ ] Optional: write or paste the first piece.
 
-Where: `src/content/blog/`; see `CONTENT_GUIDE.md`. Starter templates are in
-`src/content/_examples/blog/`.
+Where: `src/content/blog/`; see `CONTENT_GUIDE.md`. There are no categories.
+Starter templates are in `src/content/_examples/blog/`.
 
 ### 8. News
 
-- [ ] Confirm or replace the current “website is in local development” item.
+- [ ] Confirm or replace the current “website is live” item.
 - [ ] Add real updates only after they happen.
 
 Where: `src/data/news.ts`.
 
 ### 9. Repository and deployment
 
-- [ ] Rename the GitHub repository to **`Yjoe177.github.io`**. At the time of
-  this build, `https://github.com/Yjoe177/Yjoe177.github.io` returns 404 and the
-  only public repo is still `Youssef-Ahmed.github.io`.
-- [ ] Approve the push.
-- [ ] Enable **Settings → Pages → Source: GitHub Actions**.
-- [ ] Confirm the target public URL: `https://yjoe177.github.io/`.
+- [x] Repository is **`Yjoe177.github.io`**, owned by Yjoe177.
+- [x] Local `main` tracks the verified `origin`.
+- [x] GitHub Actions build/deploy completed successfully.
+- [x] Public URL: `https://yjoe177.github.io/`.
+- [ ] Optional: custom domain at a later date.
 
-No remote has been configured because the renamed repository could not be
-verified yet. The deployment workflow is ready at
-`.github/workflows/deploy.yml`.
+The deployment workflow lives at `.github/workflows/deploy.yml`.
 
 ## Current placeholder locations
 
 | Gap | Where it appears |
 | --- | --- |
-| Personal background | Hidden; no public placeholder |
 | No publications | `/publications/` and `/cv/` (honest empty state) |
-| Empty journal | `/blog/` (designed empty state, not fake posts) |
+| Empty Between the Lines | `/blog/` (designed empty state, not fake posts) |
 | Google Scholar / ORCID / X | Hidden until URLs are supplied |
 | Research project naming/details | Existing TinySSM and Agentic MCU pages |
 
 There are **no visible placeholder notes** on the public pages. The portrait, CV
 downloads, email, GitHub, LinkedIn, education dates, awards, activities, and
-skills are real content. Journal entries and publications simply do not exist yet
-and are presented as honest empty states.
+skills are real content. Between the Lines pieces and publications simply do not
+exist yet and are presented as honest empty states.
 
 ## Please do not send
 

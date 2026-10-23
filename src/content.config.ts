@@ -1,7 +1,6 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { BLOG_CATEGORY_NAMES } from './lib/categories';
 
 const linkSchema = z.object({
   label: z.string().min(1),
@@ -15,7 +14,6 @@ const blog = defineCollection({
     description: z.string().min(1).max(320),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    category: z.enum(BLOG_CATEGORY_NAMES),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     cover: z.string().optional(),

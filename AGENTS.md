@@ -91,8 +91,8 @@ src/
 │  ├─ SectionHeading.astro
 │  ├─ ProjectCard.astro
 │  ├─ PublicationEntry.astro
-│  ├─ BlogIndex.astro       Category filters, year groups, rows
-│  ├─ PostPreview.astro     Compact home-page journal item
+│  ├─ BlogIndex.astro       Uncategorized writing list + empty state
+│  ├─ PostPreview.astro     Compact home-page writing item
 │  ├─ NewsList.astro
 │  ├─ Portrait.astro
 │  ├─ StatusBadge.astro
@@ -101,9 +101,11 @@ src/
 │  ├─ PlaceholderNote.astro
 │  └─ Callout.astro         Used from MDX
 ├─ config/site.ts           Identity, contact, nav, interests, flags
+├─ config/writing.ts        Between the Lines title/copy/emoji
+├─ config/academic.ts       Shared Westlake/ENCODE/Huan Wang links
 ├─ content.config.ts        Blog/research/publication schemas
 ├─ content/
-│  ├─ blog/                 Published entries + hidden _template.md
+│  ├─ blog/                 Published writing + hidden _template.md
 │  ├─ research/             TinySSM + agentic MCU projects
 │  ├─ publications/         Hidden _template.md; no real pubs yet
 │  └─ _examples/            Unloaded blog + publication templates
@@ -112,10 +114,9 @@ src/
 │  └─ profile.ts            Education, experience, awards, activities, skills
 ├─ layouts/
 │  ├─ BaseLayout.astro      <html>, theme script, header/footer, global CSS
-│  ├─ PageLayout.astro      Inner page header + optional .journal-page wrapper
+│  ├─ PageLayout.astro      Inner page header + optional .writing-page wrapper
 │  └─ BlogPostLayout.astro  Article header, cover, prose, tags, prev/next
 ├─ lib/
-│  ├─ categories.ts         Single source of blog categories
 │  ├─ posts.ts              Draft-aware queries, dates, reading time
 │  └─ research.ts           Research/publication queries, labels
 ├─ pages/
@@ -123,8 +124,7 @@ src/
 │  ├─ research/index.astro
 │  ├─ research/[...slug].astro
 │  ├─ publications.astro
-│  ├─ blog/index.astro
-│  ├─ blog/category/[category].astro
+│  ├─ blog/index.astro      Between the Lines
 │  ├─ blog/[...slug].astro
 │  ├─ about.astro
 │  ├─ cv.astro
@@ -158,19 +158,22 @@ zero-width box and causes overflow). Do not "simplify" this back to one
 6. Dates are formatted in UTC to avoid local-time off-by-one errors.
 7. Publication files beginning with `_` are hidden templates. Keep the filter in
    `getPublications()` if the folder has no real entries.
-8. Blog categories are defined once in `src/lib/categories.ts` and feed the Zod
-   schema, filter UI, and category routes.
+8. Between the Lines uses the `/blog/` URL but has **no categories**. The blog
+   schema intentionally omits a `category` field; do not add one. Old category
+   URLs redirect to `/blog/` via `astro.config.mjs`.
+9. Academic destinations are centralized in `src/config/academic.ts`; profile
+   entries carry structured URL and supervisor links for About/CV rendering.
 
 ## Design system
 
 `src/styles/global.css` is organized by section: fonts, tokens, reset, layout,
-header, footer, home, cards, page headers, prose, journal, research,
+header, footer, home, cards, page headers, prose, Between the Lines, research,
 publications, about, CV, contact, 404, responsive, motion, print.
 
 - Use the CSS custom properties in `:root` and `[data-theme='dark']`.
 - Do not hardcode colors in components when a token exists.
-- Light palette is warm paper + teal; the journal locally overrides
-  `--accent` to a warm brown via `.journal-page`.
+- Light palette is warm paper + teal; Between the Lines locally overrides
+  `--accent` to a warm brown via `.writing-page`.
 - Headings use Newsreader; UI/body use Inter. Blog prose switches to Newsreader.
 - Code blocks stay dark in both themes for token legibility.
 - Radii are restrained (3–8 px), shadows are subtle, motion is minimal.
@@ -249,9 +252,12 @@ field to existing entries (or a default), update the display component, run
 `npm run check`, and document it in `CONTENT_GUIDE.md`. Zod defaults matter:
 defaults must match the output type (Zod 4).
 
-**New category:** update `src/lib/categories.ts`. Category routes and the filter
-UI update automatically. Existing posts using an old name will fail schema
-validation. Restart the dev server after changing collection schemas.
+**New writing:** add a Markdown/MDX file under `src/content/blog/`. Do not add
+a `category` field. Optional tags are keywords only; they do not create filters
+or routes. Remove `draft` when ready and verify `/blog/` and RSS.
+
+**New academic link:** add it to `src/config/academic.ts`, then reference the
+shared object from data/components. Do not duplicate external URLs.
 
 **New icon:** add a name to the union and an explicit SVG element in
 `Icon.astro`; keep `aria-hidden="true"`.
@@ -273,22 +279,28 @@ npm run check
 npm run build
 ```
 
-A clean build currently generates 14 HTML pages (4 category pages, 2 research
-details, empty journal landing, RSS, robots, 404, and sitemap). No draft or
-starter-template routes should appear. The loader warning for the empty blog or
-publications collection should not appear because hidden `_template.md` entries
-exist and are filtered out.
+A clean build currently generates 10 HTML pages (404, About, Between the Lines,
+Contact, CV, Publications, Research index, 2 research details, and Home) plus
+five legacy category redirect pages. No draft or starter-template routes should
+appear. RSS, robots, and the sitemap are also generated. The loader warning for
+the empty blog or publications collection should not appear because hidden
+`_template.md` entries exist and are filtered out.
 
 Manual/automated checks performed for this revision:
 
 - Production crawl of every route, PDF, font, and image: all expected 200s;
   unknown and draft routes 404.
-- Responsive checks at 1440, 1024, 768, 430, plus 320/360 and the 920/921
-  breakpoint: no page overflow, one `h1` per page.
+- Responsive checks at 1440, 1025, 1024, 921, 768, 430, and 320: 42 checks,
+  no page overflow and one `h1` per page.
+- The longer “Between the Lines” label fits the desktop nav at 1025px and
+  switches to the mobile menu at 1024px.
 - Theme toggle persists to `localStorage`; mobile menu opens and closes.
-- Keyboard tab order contains no hidden or zero-size focus targets.
-- Contrast tokens pass 4.5:1 in both themes.
-- axe-core audit across representative pages, themes, and widths: 0 violations.
+- Old category URLs redirect to `/blog/` in a browser.
+- Academic links resolve: Huan Wang, ENCODE Lab, Westlake University.
+- Temporary published MDX + draft test: published article rendered, draft route
+  and RSS item excluded, tags and reading time rendered, no category markup.
+- axe-core audit across representative pages, themes, and widths: 0 violations
+  (28 checks).
 - Portrait face detection confirms the cropped face is fully inside the frame
   with 26% headroom and 36–37% side margins.
 - Both public CV PDFs are one page, A4, and contain no phone number in extracted
@@ -311,21 +323,23 @@ phone widths.
   user site or a custom domain). No `base` path is set.
 - `.github/workflows/deploy.yml` uses `actions/checkout@v7`,
   `withastro/action@v6` with Node 24, and `actions/deploy-pages@v5`.
-- At the time of the handoff, the target repository returns 404 and the only
-  public repository is still `Youssef-Ahmed.github.io`. Do not configure a
-  remote until the renamed repository is visible.
-- Deploying is a separate, explicitly authorized step. Do not push or enable
-  Pages without the owner's approval.
+- The repository exists, `origin` points at it, and `main` tracks
+  `origin/main`. The GitHub Actions build/deploy completed successfully.
+- A dormant legacy `pages-build-deployment` workflow remains visible from
+  before; the Astro deploy workflow is the one used for new commits.
+- Deploying is a separate action. Push only with the owner's authorization.
 - The untouched source photograph `Youssef.jpg` is gitignored; the optimized
   crop is committed at `public/images/youssef-amr.jpg`.
 
 ## Known limitations / intentional omissions
 
-- The personal background section is hidden until written; there are no visible
-  placeholder notes on the public pages.
+- The “Beyond research” section now introduces Between the Lines; there are no
+  visible placeholder notes on the public pages.
 - No publications are listed; the site says so explicitly.
-- The journal is intentionally empty and uses a designed landing state. Starter
-  templates live outside the published collection.
+- The Between the Lines space is intentionally empty and uses a designed
+  landing state. Starter templates live outside the published collection.
+- Legacy category URLs are static meta-refresh redirects to `/blog/`, not HTTP
+  301s, because the site is fully static.
 - Research project naming is unresolved: the site uses TinySSM and Agentic MCU
   Kernel Optimization while the current CV uses TinyMamba and Agentic TinyML.
   Do not rename without owner confirmation.
