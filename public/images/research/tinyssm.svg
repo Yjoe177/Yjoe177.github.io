@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">TinySSM keyword spotting illustration</title>
+  <desc id="desc">An abstract diagram of an audio waveform entering a small microcontroller chip, with labels for TinySSM and keyword spotting.</desc>
+  <defs>
+    <pattern id="tinyssm-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#f2ead9" stroke-width="1" opacity="0.055" />
+    </pattern>
+    <radialGradient id="tinyssm-glow" cx="0.78" cy="0.45" r="0.55">
+      <stop offset="0" stop-color="#7cc7bd" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#7cc7bd" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="tinyssm-wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f2ead9" stop-opacity="0.15" />
+      <stop offset="0.2" stop-color="#f2ead9" />
+      <stop offset="1" stop-color="#7cc7bd" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="#102f2c" />
+  <rect width="1200" height="750" fill="url(#tinyssm-glow)" />
+  <rect width="1200" height="750" fill="url(#tinyssm-grid)" />
+
+  <text x="72" y="88" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="15" letter-spacing="4.5">RESEARCH / 01</text>
+  <line x1="72" y1="112" x2="1128" y2="112" stroke="#f2ead9" stroke-width="1" opacity="0.18" />
+
+  <text x="72" y="242" fill="#f2ead9" font-family="Georgia, 'Times New Roman', serif" font-size="86" letter-spacing="-3">TinySSM</text>
+  <text x="72" y="286" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="17" letter-spacing="2.5">ALWAYS-ON KEYWORD SPOTTING</text>
+
+  <path d="M72 466 H190 L212 426 L236 512 L262 390 L290 536 L318 444 L342 486 L368 452 L394 476 H470 L492 438 L516 502 L542 408 L568 522 L594 448 L618 480 L642 458 L668 474 H742"
+        fill="none" stroke="url(#tinyssm-wave)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <line x1="72" y1="466" x2="1128" y2="466" stroke="#f2ead9" stroke-width="1" opacity="0.12" stroke-dasharray="3 7" />
+
+  <g opacity="0.95">
+    <rect x="838" y="276" width="230" height="230" rx="14" fill="#173f3b" stroke="#7cc7bd" stroke-width="1.6" />
+    <rect x="860" y="298" width="186" height="186" rx="6" fill="none" stroke="#f2ead9" stroke-width="1" opacity="0.22" />
+    <path d="M884 330H932M884 360H964M884 390H916M884 420H948" stroke="#7cc7bd" stroke-width="2" opacity="0.6" stroke-linecap="round" />
+    <circle cx="1028" cy="446" r="7" fill="#d9a05b" />
+    <text x="953" y="540" text-anchor="middle" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="3">MCU</text>
+    <g stroke="#f2ead9" stroke-width="2" opacity="0.3" stroke-linecap="round">
+      <path d="M814 320H838M814 356H838M814 392H838M814 428H838M1068 320H1092M1068 356H1092M1068 392H1092M1068 428H1092" />
+      <path d="M880 252V276M918 252V276M956 252V276M994 252V276M1024 252V276M880 506V530M918 506V530M956 506V530M994 506V530M1024 506V530" />
+    </g>
+  </g>
+
+  <circle cx="764" cy="466" r="4" fill="#7cc7bd" />
+  <line x1="768" y1="466" x2="814" y2="466" stroke="#7cc7bd" stroke-width="1.5" opacity="0.5" />
+
+  <line x1="72" y1="650" x2="1128" y2="650" stroke="#f2ead9" stroke-width="1" opacity="0.18" />
+  <text x="72" y="690" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="2.4">STATESPACE MODELS · EMBEDDED INFERENCE · EFFICIENCY</text>
+  <text x="1128" y="690" text-anchor="end" fill="#d9a05b" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="2.4">ONGOING</text>
+</svg>

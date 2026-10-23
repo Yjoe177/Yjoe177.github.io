@@ -1,0 +1,145 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import Icon from '../../components/Icon.astro';
+import { siteConfig } from '../../config/site';
+import { getResearch, statusLabels } from '../../lib/research';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getResearch({ includeDrafts: import.meta.env.DEV });
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const data = project.data;
+const { Content } = await render(project);
+const canonical = new URL(`/research/${project.id}/`, Astro.site ?? Astro.url).href;
+const periodIsRedundant =
+  data.period?.trim().toLowerCase() === statusLabels[data.status].toLowerCase();
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.description,
+  url: canonical,
+  creator: { '@type': 'Person', name: siteConfig.name },
+  keywords: [...data.topics, ...data.technologies].join(', '),
+};
+---
+
+<PageLayout
+  title={data.title}
+  eyebrow="Research project"
+  lede={data.description}
+  description={data.description}
+  structuredData={structuredData}
+>
+  <div class="container">
+    <div class="page-header-meta">
+      <StatusBadge status={data.status} label={statusLabels[data.status]} />
+      {data.period && !periodIsRedundant && (
+        <span class="chip chip--static">{data.period}</span>
+      )}
+      {data.topics.map((topic) => <span class="chip chip--static">{topic}</span>)}
+    </div>
+  </div>
+
+  {data.cover && (
+    <figure class="research-cover container">
+      <img
+        src={data.cover}
+        alt={data.coverAlt ?? ''}
+        width="1200"
+        height="750"
+        decoding="async"
+      />
+    </figure>
+  )}
+
+  <div class="container research-layout">
+    <article class="prose">
+      {data.results.length > 0 && (
+        <section class="research-results" aria-labelledby="project-results">
+          <h2 id="project-results">Selected results</h2>
+          <ul class="result-list">
+            {data.results.map((result) => <li>{result}</li>)}
+          </ul>
+        </section>
+      )}
+      <Content />
+    </article>
+
+    <aside class="research-aside" aria-label="Project details">
+      <dl class="fact-list">
+        <div>
+          <dt>Status</dt>
+          <dd>{statusLabels[data.status]}</dd>
+        </div>
+        {data.period && !periodIsRedundant && (
+          <div>
+            <dt>Period</dt>
+            <dd>{data.period}</dd>
+          </div>
+        )}
+        <div>
+          <dt>Topics</dt>
+          <dd class="topic-list">
+            {data.topics.map((topic) => <span class="chip chip--static">{topic}</span>)}
+          </dd>
+        </div>
+        <div>
+          <dt>Approaches</dt>
+          <dd class="topic-list">
+            {data.technologies.map((technology) => (
+              <span class="chip chip--static">{technology}</span>
+            ))}
+          </dd>
+        </div>
+      </dl>
+
+      {data.links.length > 0 && (
+        <div class="topic-list">
+          {data.links.map((link) => (
+            <a
+              class="button button--ghost"
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.label}
+              <Icon name="arrow-up-right" size={13} />
+            </a>
+          ))}
+        </div>
+      )}
+
+      <a class="button button--ghost" href="/contact/">
+        Discuss this work
+        <Icon name="arrow-right" size={14} />
+      </a>
+
+      {data.status === 'ongoing' && (
+        <p class="research-note">
+          This is ongoing work. Results are published only once they are
+          verified and reproducible.
+        </p>
+      )}
+
+      <a class="text-link" href="/research/">
+        <span aria-hidden="true" class="back-arrow">←</span>
+        All research
+      </a>
+    </aside>
+  </div>
+</PageLayout>
+
+<style>
+  .research-aside .text-link {
+    font-size: 0.8rem;
+  }
+</style>

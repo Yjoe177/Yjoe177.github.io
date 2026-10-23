@@ -1,0 +1,104 @@
+﻿---
+title: A Template for Research Notes
+description: A formatting sample that shows how a longer technical entry can use headings, callouts, code, tables, and references.
+pubDate: 2026-10-21
+updatedDate: 2026-10-22
+category: Research Notes
+tags:
+  - Template
+  - Research
+  - Writing
+draft: true
+cover: /images/blog/template-research-cover.svg
+coverAlt: An abstract illustration of notebook lines, a bracket, and a quotation mark
+---
+
+import Callout from '../../components/Callout.astro';
+
+{/* TEMPLATE: this file lives outside src/content/blog and is never built.
+    The import above assumes the file will be copied into src/content/blog/. */}
+
+<Callout title="This is a formatting template">
+  Nothing in this entry reports real results. It exists to show how a research
+  note can be structured and styled. Replace it with your own writing.
+</Callout>
+
+A good research note is not a shorter paper. It is a record of the path: what
+you expected, what you tried, what changed your mind, and what you still do not
+understand. The structure below is a starting point, not a rule.
+
+## The shape of a note
+
+I usually begin with a short statement of the question. One paragraph is enough.
+It keeps the note honest, because every later section has to answer it.
+
+### 1. Question
+
+What exactly am I trying to learn? For example: *which parts of a keyword
+spotting pipeline dominate on-device memory?* A question is more useful than a
+topic because it tells you when the note is finished.
+
+### 2. Context
+
+What did I read or try before this? Link to the paper, repository, or earlier
+note. Future-you will not remember why a particular experiment seemed obvious.
+
+### 3. Observations
+
+Keep raw observations separate from interpretation. This makes it possible to
+revisit the note later and disagree with your past self.
+
+### 4. Next step
+
+End with the smallest useful next action. "Run a full sweep" is rarely it.
+"Measure the memory of the smallest configuration" is.
+
+<Callout title="A note on uncertainty" tone="warning">
+  Write down what you do not know. An unresolved question is a better ending
+  than a confident sentence that turns out to be wrong.
+</Callout>
+
+## A small code example
+
+Code blocks use a dark theme in both light and dark modes so that syntax colors
+stay readable:
+
+```python
+def receptive_field(kernel_sizes: list[int], strides: list[int]) -> int:
+    """Receptive field for a stack of same-padded convolutions."""
+    field = 1
+    jump = 1
+    for size, stride in zip(kernel_sizes, strides):
+        field += (size - 1) * jump
+        jump *= stride
+    return field
+
+
+print(receptive_field([3, 3, 3], [1, 1, 1]))
+```
+
+Inline code, like `torch.compile`, is styled separately. Long lines wrap rather
+than forcing horizontal scrolling.
+
+## Recording comparisons
+
+Small tables are useful when the comparison is qualitative:
+
+| Approach | Strength | Cost | Open question |
+| --- | --- | --- | --- |
+| Recurrent baseline | Streaming inference | Sequential compute | Latency on small MCUs |
+| State-space model | Long context | State memory | Quantization behavior |
+| Tiny transformer | Strong accuracy | Attention memory | Fits the budget? |
+
+Do not add numerical results to a public table until they are measured and can
+be reproduced. "No measurement yet" is a perfectly valid entry.
+
+## References and links
+
+Use ordinary Markdown links for sources. Internal links should point at the
+final route, for example [the TinySSM project](/research/tinyssm-keyword-spotting/).
+The site does not rewrite links, so check them before publishing.
+
+A closing note can point to the next entry, a repository, or a question for a
+collaborator. The journal is a record of thinking, not a sequence of
+announcements.

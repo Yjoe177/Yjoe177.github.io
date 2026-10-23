@@ -1,0 +1,42 @@
+---
+import type { Publication } from '../lib/research';
+import { publicationStatusLabels, publicationTypeLabels } from '../lib/research';
+import StatusBadge from './StatusBadge.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  publication: Publication;
+}
+
+const { publication } = Astro.props;
+const data = publication.data;
+---
+
+<article class="publication">
+  <div class="publication-top">
+    <span class="publication-year">{data.year}</span>
+    <StatusBadge
+      status={data.status}
+      label={publicationStatusLabels[data.status]}
+    />
+    <span class="chip chip--static">{publicationTypeLabels[data.type]}</span>
+  </div>
+
+  <h3 class="publication-title">{data.title}</h3>
+  <p class="publication-authors">{data.authors.join(', ')}</p>
+  <p class="publication-venue">{data.venue}</p>
+
+  {data.abstract && <p class="publication-abstract">{data.abstract}</p>}
+  {data.note && <p class="publication-abstract">{data.note}</p>}
+
+  {data.links.length > 0 && (
+    <div class="publication-links">
+      {data.links.map((link) => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer">
+          {link.label}
+          <Icon name="arrow-up-right" size={11} />
+        </a>
+      ))}
+    </div>
+  )}
+</article>

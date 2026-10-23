@@ -1,0 +1,14 @@
+---
+interface Props {
+  tags: string[];
+  class?: string;
+}
+
+const { tags, class: className } = Astro.props;
+---
+
+{tags.length > 0 && (
+  <ul class:list={['chip-list', className]} aria-label="Tags">
+    {tags.map((tag) => <li class="chip chip--static">{tag}</li>)}
+  </ul>
+)}

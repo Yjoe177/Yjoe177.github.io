@@ -1,0 +1,28 @@
+---
+export type Status =
+  | 'ongoing'
+  | 'completed'
+  | 'archived'
+  | 'published'
+  | 'forthcoming'
+  | 'preprint';
+
+interface Props {
+  status: Status;
+  label?: string;
+  class?: string;
+}
+
+const { status, label, class: className } = Astro.props;
+
+const labels: Record<Status, string> = {
+  ongoing: 'Ongoing',
+  completed: 'Completed',
+  archived: 'Archived',
+  published: 'Published',
+  forthcoming: 'Forthcoming',
+  preprint: 'Preprint',
+};
+---
+
+<span class:list={['status', `status--${status}`, className]}>{label ?? labels[status]}</span>

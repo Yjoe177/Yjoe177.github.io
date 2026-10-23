@@ -1,0 +1,55 @@
+---
+import { siteConfig } from '../config/site';
+import NavLinks from './NavLinks.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label={`${siteConfig.name} — home`}>
+      <span class="brand-mark" aria-hidden="true">{siteConfig.initials}</span>
+      <span class="brand-copy">
+        <span class="brand-name">{siteConfig.name}</span>
+        <span class="brand-meta">{siteConfig.role} · {siteConfig.affiliation}</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav primary-nav--desktop" aria-label="Primary navigation">
+      <NavLinks />
+    </nav>
+
+    <details class="nav-disclosure">
+      <summary class="nav-toggle">
+        <span class="nav-toggle-open">Menu</span>
+        <span class="nav-toggle-close">Close</span>
+      </summary>
+      <nav class="primary-nav primary-nav--mobile" aria-label="Primary navigation">
+        <NavLinks />
+      </nav>
+    </details>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .nav-toggle {
+    list-style: none;
+  }
+
+  .nav-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-toggle-close {
+    display: none;
+  }
+
+  .nav-disclosure[open] .nav-toggle-open {
+    display: none;
+  }
+
+  .nav-disclosure[open] .nav-toggle-close {
+    display: inline;
+  }
+</style>

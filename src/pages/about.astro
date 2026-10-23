@@ -1,0 +1,268 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Portrait from '../components/Portrait.astro';
+import PlaceholderNote from '../components/PlaceholderNote.astro';
+import Icon from '../components/Icon.astro';
+import { activeContactLinks, hasEmail, siteConfig } from '../config/site';
+import {
+  activities,
+  awards,
+  education,
+  personalBackground,
+  researchExperience,
+  service,
+} from '../data/profile';
+import { getResearch, statusLabels } from '../lib/research';
+
+const research = await getResearch({ includeDrafts: import.meta.env.DEV });
+const involvement = [...activities, ...service];
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: canonical,
+  mainEntity: {
+    '@type': 'Person',
+    name: siteConfig.name,
+    jobTitle: siteConfig.role,
+    affiliation: { '@type': 'CollegeOrUniversity', name: siteConfig.affiliation },
+    description: siteConfig.bio.short,
+    knowsAbout: siteConfig.researchInterests,
+  },
+};
+---
+
+<PageLayout
+  title="About"
+  eyebrow="Biography & experience"
+  lede="A student of artificial intelligence, interested in the engineering that makes intelligent systems small, fast, and dependable."
+  description="About Youssef Amr: education at Westlake University, research experience, interests, awards, and activities."
+  type="profile"
+  structuredData={structuredData}
+>
+  <div class="container about-grid">
+    <div class="about-main">
+      <section class="about-section" aria-labelledby="about-biography">
+        <h2 class="about-section-title" id="about-biography">
+          <span class="about-section-index" aria-hidden="true">01</span>
+          Biography
+        </h2>
+        <p class="about-prose">{siteConfig.bio.long}</p>
+        <p class="about-prose">
+          This site collects research notes, longer project write-ups, and a
+          journal for ideas that do not fit into a paper. It is maintained as a
+          static website: the writing lives in plain text, and the design stays
+          out of the way.
+        </p>
+      </section>
+
+      <section class="about-section" aria-labelledby="about-interests">
+        <h2 class="about-section-title" id="about-interests">
+          <span class="about-section-index" aria-hidden="true">02</span>
+          Research interests
+        </h2>
+        <ul class="chip-list" aria-label="Research interests">
+          {siteConfig.researchInterests.map((interest) => (
+            <li class="chip">{interest}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="about-section" aria-labelledby="about-education">
+        <h2 class="about-section-title" id="about-education">
+          <span class="about-section-index" aria-hidden="true">03</span>
+          Education
+        </h2>
+        <div class="timeline">
+          {education.map((entry) => (
+            <article class="timeline-item">
+              <h3 class="timeline-title">{entry.institution}</h3>
+              <p class="timeline-org">{entry.degree}</p>
+              <p class="timeline-meta">
+                {entry.location} · {entry.period}
+                {entry.isPlaceholder && <span class="badge badge--draft">Dates pending</span>}
+              </p>
+              {entry.details.length > 0 && (
+                <div class="timeline-desc">
+                  <ul>
+                    {entry.details.map((detail) => <li>{detail}</li>)}
+                  </ul>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="about-section" aria-labelledby="about-research">
+        <h2 class="about-section-title" id="about-research">
+          <span class="about-section-index" aria-hidden="true">04</span>
+          Research experience
+        </h2>
+        {researchExperience.length > 0 ? (
+          <div class="timeline">
+            {researchExperience.map((entry) => (
+              <article class="timeline-item">
+                <h3 class="timeline-title">{entry.title}</h3>
+                {entry.organization && <p class="timeline-org">{entry.organization}</p>}
+                {entry.period && <p class="timeline-meta">{entry.period}</p>}
+                <p class="timeline-desc">{entry.description}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="about-prose">Research experience is being prepared.</p>
+        )}
+      </section>
+
+      <section class="about-section" aria-labelledby="about-projects">
+        <h2 class="about-section-title" id="about-projects">
+          <span class="about-section-index" aria-hidden="true">05</span>
+          Selected projects
+        </h2>
+        {research.length > 0 ? (
+          <div class="timeline">
+            {research.map((project) => (
+              <article class="timeline-item">
+                <h3 class="timeline-title">
+                  <a href={`/research/${project.id}/`}>{project.data.title}</a>
+                </h3>
+                <p class="timeline-org">Research project</p>
+                <p class="timeline-meta">
+                  {statusLabels[project.data.status]}
+                  {project.data.period &&
+                  project.data.period.toLowerCase() !==
+                    statusLabels[project.data.status].toLowerCase()
+                    ? ` · ${project.data.period}`
+                    : ''}
+                </p>
+                <p class="timeline-desc">{project.data.description}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="about-prose">Research project write-ups are being prepared.</p>
+        )}
+      </section>
+
+      <section class="about-section" aria-labelledby="about-awards">
+        <h2 class="about-section-title" id="about-awards">
+          <span class="about-section-index" aria-hidden="true">06</span>
+          Awards &amp; honours
+        </h2>
+        {awards.length > 0 ? (
+          <div class="timeline">
+            {awards.map((award) => (
+              <article class="timeline-item">
+                <h3 class="timeline-title">{award.title}</h3>
+                {award.organization && <p class="timeline-org">{award.organization}</p>}
+                {award.period && <p class="timeline-meta">{award.period}</p>}
+                <p class="timeline-desc">{award.description}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <PlaceholderNote label="Placeholder">
+            <p>
+              No awards or honours have been listed yet. Confirmed awards,
+              scholarships, and distinctions will appear here.
+            </p>
+          </PlaceholderNote>
+        )}
+      </section>
+
+      <section class="about-section" aria-labelledby="about-activities">
+        <h2 class="about-section-title" id="about-activities">
+          <span class="about-section-index" aria-hidden="true">07</span>
+          Activities &amp; service
+        </h2>
+        {involvement.length > 0 ? (
+          <div class="timeline">
+            {involvement.map((item) => (
+              <article class="timeline-item">
+                <h3 class="timeline-title">{item.title}</h3>
+                {item.organization && <p class="timeline-org">{item.organization}</p>}
+                {item.period && <p class="timeline-meta">{item.period}</p>}
+                <p class="timeline-desc">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <PlaceholderNote label="Placeholder">
+            <p>
+              Workshops, talks, community work, and service will be listed here
+              once they are confirmed.
+            </p>
+          </PlaceholderNote>
+        )}
+      </section>
+
+      <section class="about-section" aria-labelledby="about-personal">
+        <h2 class="about-section-title" id="about-personal">
+          <span class="about-section-index" aria-hidden="true">08</span>
+          Beyond research
+        </h2>
+        {personalBackground.isPlaceholder ? (
+          <PlaceholderNote label="Placeholder">
+            <p>{personalBackground.text}</p>
+          </PlaceholderNote>
+        ) : (
+          <p class="about-prose">{personalBackground.text}</p>
+        )}
+      </section>
+    </div>
+
+    <aside class="about-aside" aria-label="At a glance">
+      <Portrait />
+
+      <div class="side-card">
+        <h2 class="side-card-title">At a glance</h2>
+        <dl class="fact-list">
+          <div>
+            <dt>Role</dt>
+            <dd>{siteConfig.role}</dd>
+          </div>
+          <div>
+            <dt>Institution</dt>
+            <dd>{siteConfig.affiliation}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>{siteConfig.location}</dd>
+          </div>
+          <div>
+            <dt>Focus</dt>
+            <dd>Efficient AI, agentic systems, TinyML</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="side-card">
+        <h2 class="side-card-title">Links</h2>
+        <div class="side-links">
+          <a href="/cv/">
+            Curriculum vitae
+            <Icon name="arrow-right" size={13} />
+          </a>
+          <a href="/contact/">
+            Contact
+            <Icon name="arrow-right" size={13} />
+          </a>
+          {hasEmail && (
+            <a href={`mailto:${siteConfig.email}`}>
+              <Icon name="mail" size={13} />
+              {siteConfig.emailLabel}
+            </a>
+          )}
+          {activeContactLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer">
+              {link.label}
+              <Icon name="arrow-up-right" size={13} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </div>
+</PageLayout>

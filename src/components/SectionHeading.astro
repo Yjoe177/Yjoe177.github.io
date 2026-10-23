@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  index?: string;
+  title: string;
+  href?: string;
+  linkLabel?: string;
+  id?: string;
+}
+
+const { index, title, href, linkLabel = 'View all', id } = Astro.props;
+---
+
+<header class="section-head" id={id}>
+  <div class="section-heading">
+    {index && <span class="section-index" aria-hidden="true">{index}</span>}
+    <h2 class="section-title">{title}</h2>
+  </div>
+  {href && (
+    <a class="section-link" href={href}>
+      {linkLabel}
+      <Icon name="arrow-right" size={14} />
+    </a>
+  )}
+</header>

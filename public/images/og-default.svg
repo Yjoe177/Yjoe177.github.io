@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Youssef Amr — AI Undergraduate at Westlake University</title>
+  <desc id="desc">A teal social sharing card with the name Youssef Amr, his role, and research interests.</desc>
+  <defs>
+    <pattern id="og-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#f2eadc" stroke-width="1" opacity="0.05" />
+    </pattern>
+    <radialGradient id="og-glow" cx="0.85" cy="0.2" r="0.65">
+      <stop offset="0" stop-color="#7cc7bd" stop-opacity="0.2" />
+      <stop offset="1" stop-color="#7cc7bd" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#132f2c" />
+  <rect width="1200" height="630" fill="url(#og-glow)" />
+  <rect width="1200" height="630" fill="url(#og-grid)" />
+  <circle cx="1080" cy="120" r="190" fill="none" stroke="#f2eadc" stroke-width="1" opacity="0.08" />
+  <circle cx="1080" cy="120" r="130" fill="none" stroke="#f2eadc" stroke-width="1" opacity="0.08" />
+
+  <text x="72" y="88" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="15" letter-spacing="4.5">PORTFOLIO / PERSONAL WEBSITE</text>
+  <line x1="72" y1="112" x2="1128" y2="112" stroke="#f2eadc" stroke-width="1" opacity="0.18" />
+
+  <text x="72" y="310" fill="#f2eadc" font-family="Georgia, 'Times New Roman', serif" font-size="112" letter-spacing="-6">Youssef Amr</text>
+
+  <text x="76" y="370" fill="#7cc7bd" font-family="Inter, Segoe UI, sans-serif" font-size="21" letter-spacing="1">AI Undergraduate · Westlake University</text>
+
+  <text x="76" y="438" fill="#c4d6d2" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic">Efficient AI, agentic systems, and learning at the edge.</text>
+
+  <line x1="72" y1="516" x2="1128" y2="516" stroke="#f2eadc" stroke-width="1" opacity="0.18" />
+  <text x="72" y="558" fill="#9fb9b3" font-family="Inter, Segoe UI, sans-serif" font-size="13" letter-spacing="2.6">EFFICIENT AI · AGENTIC SYSTEMS · TINYML · INFERENCE OPTIMIZATION</text>
+  <text x="1128" y="558" text-anchor="end" fill="#d9a05b" font-family="Inter, Segoe UI, sans-serif" font-size="13" letter-spacing="2.6">HANGZHOU, CHINA</text>
+</svg>

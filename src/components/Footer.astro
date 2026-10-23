@@ -1,0 +1,58 @@
+---
+import { activeContactLinks, hasEmail, siteConfig } from '../config/site';
+import Icon from './Icon.astro';
+
+const year = new Date().getUTCFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <p class="footer-brand-name">{siteConfig.name}</p>
+        <p>{siteConfig.tagline}</p>
+      </div>
+
+      <div>
+        <h2 class="footer-heading">Explore</h2>
+        <ul class="footer-links">
+          {siteConfig.nav.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer-heading">Elsewhere</h2>
+        <ul class="footer-links">
+          {hasEmail && (
+            <li>
+              <a href={`mailto:${siteConfig.email}`}>
+                <Icon name="mail" size={13} /> {siteConfig.emailLabel}
+              </a>
+            </li>
+          )}
+          {activeContactLinks.map((link) => (
+            <li>
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/rss.xml">RSS feed</a></li>
+          <li><a href="/cv/">CV</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {siteConfig.name}. All rights reserved.</p>
+      <p>
+        Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
+        <span aria-hidden="true"> · </span>
+        <a href="/rss.xml">RSS</a>
+      </p>
+    </div>
+  </div>
+</footer>

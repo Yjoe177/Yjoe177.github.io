@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic MCU kernel optimization illustration</title>
+  <desc id="desc">An abstract agent loop diagram connecting inspect, propose, test, and measure steps around a microcontroller.</desc>
+  <defs>
+    <pattern id="agent-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#f2ead9" stroke-width="1" opacity="0.045" />
+    </pattern>
+    <radialGradient id="agent-glow" cx="0.5" cy="0.55" r="0.6">
+      <stop offset="0" stop-color="#d9a05b" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#d9a05b" stop-opacity="0" />
+    </radialGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7cc7bd" />
+    </marker>
+  </defs>
+
+  <rect width="1200" height="750" fill="#191c19" />
+  <rect width="1200" height="750" fill="url(#agent-glow)" />
+  <rect width="1200" height="750" fill="url(#agent-grid)" />
+
+  <text x="72" y="88" fill="#a8b1a4" font-family="Inter, Segoe UI, sans-serif" font-size="15" letter-spacing="4.5">RESEARCH / 02</text>
+  <line x1="72" y1="112" x2="1128" y2="112" stroke="#f2ead9" stroke-width="1" opacity="0.16" />
+
+  <text x="72" y="228" fill="#f2ead9" font-family="Georgia, 'Times New Roman', serif" font-size="78" letter-spacing="-3">Agentic MCU</text>
+  <text x="72" y="300" fill="#f2ead9" font-family="Georgia, 'Times New Roman', serif" font-size="78" letter-spacing="-3">Kernel Optimization</text>
+
+  <g>
+    <rect x="88" y="386" width="188" height="82" rx="4" fill="#20251f" stroke="#3c463c" stroke-width="1.2" />
+    <text x="112" y="420" fill="#7cc7bd" font-family="Inter, Segoe UI, sans-serif" font-size="11" letter-spacing="2.4">STEP 01</text>
+    <text x="112" y="448" fill="#f2ead9" font-family="Inter, Segoe UI, sans-serif" font-size="17">Inspect</text>
+
+    <rect x="336" y="386" width="188" height="82" rx="4" fill="#20251f" stroke="#3c463c" stroke-width="1.2" />
+    <text x="360" y="420" fill="#7cc7bd" font-family="Inter, Segoe UI, sans-serif" font-size="11" letter-spacing="2.4">STEP 02</text>
+    <text x="360" y="448" fill="#f2ead9" font-family="Inter, Segoe UI, sans-serif" font-size="17">Propose</text>
+
+    <rect x="336" y="552" width="188" height="82" rx="4" fill="#20251f" stroke="#3c463c" stroke-width="1.2" />
+    <text x="360" y="586" fill="#7cc7bd" font-family="Inter, Segoe UI, sans-serif" font-size="11" letter-spacing="2.4">STEP 04</text>
+    <text x="360" y="614" fill="#f2ead9" font-family="Inter, Segoe UI, sans-serif" font-size="17">Measure</text>
+
+    <rect x="88" y="552" width="188" height="82" rx="4" fill="#20251f" stroke="#3c463c" stroke-width="1.2" />
+    <text x="112" y="586" fill="#7cc7bd" font-family="Inter, Segoe UI, sans-serif" font-size="11" letter-spacing="2.4">STEP 03</text>
+    <text x="112" y="614" fill="#f2ead9" font-family="Inter, Segoe UI, sans-serif" font-size="17">Test</text>
+  </g>
+
+  <g fill="none" stroke="#7cc7bd" stroke-width="1.6" marker-end="url(#arrow)" opacity="0.8">
+    <path d="M282 427H322" />
+    <path d="M430 474V532" />
+    <path d="M322 593H282" />
+    <path d="M182 546V484" />
+  </g>
+
+  <g>
+    <circle cx="882" cy="500" r="128" fill="#122f2c" stroke="#7cc7bd" stroke-width="1.4" />
+    <circle cx="882" cy="500" r="96" fill="none" stroke="#f2ead9" stroke-width="1" opacity="0.16" />
+    <rect x="838" y="456" width="88" height="88" rx="8" fill="none" stroke="#f2ead9" stroke-width="1.4" opacity="0.8" />
+    <path d="M854 478H880M854 496H894M854 514H870" stroke="#7cc7bd" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+    <circle cx="912" cy="516" r="5" fill="#d9a05b" />
+    <g stroke="#f2ead9" stroke-width="1.4" opacity="0.3">
+      <path d="M822 476H838M822 492H838M822 508H838M822 524H838M926 476H942M926 492H942M926 508H942M926 524H942" />
+      <path d="M858 440V456M874 440V456M890 440V456M906 440V456M858 544V560M874 544V560M890 544V560M906 544V560" />
+    </g>
+    <text x="882" y="662" text-anchor="middle" fill="#a8b1a4" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="3">TARGET</text>
+  </g>
+
+  <path d="M520 500H742" fill="none" stroke="#d9a05b" stroke-width="1.2" stroke-dasharray="4 7" opacity="0.55" />
+  <text x="631" y="486" text-anchor="middle" fill="#d9a05b" font-family="Inter, Segoe UI, sans-serif" font-size="11" letter-spacing="2.2">VERIFY LOOP</text>
+
+  <line x1="72" y1="690" x2="1128" y2="690" stroke="#f2ead9" stroke-width="1" opacity="0.16" />
+  <text x="72" y="718" fill="#a8b1a4" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="2.4">LLM AGENTS · KERNELS · EMBEDDED SYSTEMS</text>
+  <text x="1128" y="718" text-anchor="end" fill="#d9a05b" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="2.4">ONGOING</text>
+</svg>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { BlogPost } from '../lib/posts';
+import { formatDate, isoDate, readingTime } from '../lib/posts';
+import { categorySlug } from '../lib/categories';
+import { siteConfig } from '../config/site';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  post: BlogPost;
+  previous?: BlogPost;
+  next?: BlogPost;
+}
+
+const { post, previous, next } = Astro.props;
+const data = post.data;
+const minutes = readingTime(post.body);
+const coverUrl = data.cover ? new URL(data.cover, Astro.site ?? Astro.url).href : undefined;
+const canonical = new URL(`/blog/${post.id}/`, Astro.site ?? Astro.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.description,
+  datePublished: data.pubDate.toISOString(),
+  dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
+  author: { '@type': 'Person', name: siteConfig.name },
+  publisher: { '@type': 'Person', name: siteConfig.name },
+  mainEntityOfPage: canonical,
+  url: canonical,
+  articleSection: data.category,
+  keywords: data.tags.join(', '),
+  image: coverUrl,
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  type="article"
+  publishedTime={data.pubDate.toISOString()}
+  modifiedTime={(data.updatedDate ?? data.pubDate).toISOString()}
+  structuredData={structuredData}
+>
+  <div class="journal-page">
+    <article class="post">
+      <div class="container">
+        <header class="post-header">
+          <a class="post-back" href="/blog/">
+            <Icon name="arrow-right" size={13} />
+            Back to the journal
+          </a>
+
+          <div class="post-meta">
+            <a href={`/blog/category/${categorySlug(data.category)}/`}>{data.category}</a>
+            <span class="dot" aria-hidden="true"></span>
+            <time datetime={isoDate(data.pubDate)}>{formatDate(data.pubDate)}</time>
+            <span class="dot" aria-hidden="true"></span>
+            <span>{minutes} min read</span>
+            {data.updatedDate && (
+              <span class="post-updated">
+                <span class="dot" aria-hidden="true"></span>
+                Updated {formatDate(data.updatedDate)}
+              </span>
+            )}
+            {data.draft && <span class="badge badge--draft">Draft</span>}
+          </div>
+
+          <h1 class="post-title">{data.title}</h1>
+          <p class="post-description">{data.description}</p>
+        </header>
+      </div>
+
+      {data.cover && (
+        <figure class="post-cover">
+          <img
+            src={data.cover}
+            alt={data.coverAlt ?? ''}
+            width="1200"
+            height="600"
+            decoding="async"
+          />
+          {data.coverAlt && <figcaption>{data.coverAlt}</figcaption>}
+        </figure>
+      )}
+
+      <div class="container post-body-wrap">
+        {data.draft && (
+          <div class="editorial-banner">
+            <span class="badge badge--draft">Draft</span>
+            <p>
+              This entry is a draft. It appears while developing locally, but is
+              excluded from production builds and RSS.
+            </p>
+          </div>
+        )}
+
+        <div class="prose prose--journal">
+          <slot />
+        </div>
+
+        {data.tags.length > 0 && (
+          <div class="post-tags">
+            <span class="post-tags-label">Filed under</span>
+            {data.tags.map((tag) => <span class="chip chip--static">{tag}</span>)}
+          </div>
+        )}
+
+        {(previous || next) && (
+          <nav class="post-nav" aria-label="More journal entries">
+            {previous ? (
+              <a class="post-nav-link" href={`/blog/${previous.id}/`}>
+                <span class="post-nav-label">Previous entry</span>
+                <span class="post-nav-title">{previous.data.title}</span>
+              </a>
+            ) : (
+              <div class="post-nav-spacer" aria-hidden="true"></div>
+            )}
+            {next ? (
+              <a class="post-nav-link post-nav-link--next" href={`/blog/${next.id}/`}>
+                <span class="post-nav-label">Next entry</span>
+                <span class="post-nav-title">{next.data.title}</span>
+              </a>
+            ) : (
+              <div class="post-nav-spacer" aria-hidden="true"></div>
+            )}
+          </nav>
+        )}
+      </div>
+    </article>
+  </div>
+</BaseLayout>

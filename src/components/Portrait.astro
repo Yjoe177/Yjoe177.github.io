@@ -1,0 +1,27 @@
+---
+import { siteConfig } from '../config/site';
+
+interface Props {
+  class?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { class: className, loading = 'lazy' } = Astro.props;
+---
+
+<figure class:list={['portrait-figure', className]}>
+  <div class="portrait-media">
+    <img
+      src={siteConfig.portrait.src}
+      alt={siteConfig.portrait.alt}
+      width="800"
+      height="1000"
+      loading={loading}
+      decoding="async"
+    />
+  </div>
+  <figcaption class="portrait-caption">
+    <strong>{siteConfig.name}</strong>
+    <span>{siteConfig.affiliation}</span>
+  </figcaption>
+</figure>

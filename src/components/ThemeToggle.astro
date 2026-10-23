@@ -1,0 +1,45 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  aria-label="Switch to dark theme"
+  title="Switch to dark theme"
+  aria-pressed="false"
+>
+  <Icon name="sun" size={16} class="theme-icon theme-icon--sun" />
+  <Icon name="moon" size={16} class="theme-icon theme-icon--moon" />
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const root = document.documentElement;
+
+  const currentTheme = () => (root.dataset.theme === 'dark' ? 'dark' : 'light');
+
+  const syncThemeButton = () => {
+    if (!button) return;
+    const isDark = currentTheme() === 'dark';
+    const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+    button.setAttribute('aria-label', label);
+    button.setAttribute('title', label);
+    button.setAttribute('aria-pressed', String(isDark));
+  };
+
+  if (button) {
+    syncThemeButton();
+    button.addEventListener('click', () => {
+      const next = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        /* Private browsing may block storage; the theme still changes. */
+      }
+      syncThemeButton();
+    });
+  }
+</script>

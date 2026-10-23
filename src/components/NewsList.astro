@@ -1,0 +1,48 @@
+---
+import type { NewsItem } from '../data/news';
+import { formatDate } from '../lib/posts';
+import Icon from './Icon.astro';
+
+interface Props {
+  items: NewsItem[];
+  limit?: number;
+}
+
+const { items, limit } = Astro.props;
+const shown = typeof limit === 'number' ? items.slice(0, limit) : items;
+---
+
+{shown.length > 0 ? (
+  <ul class="news-list">
+    {shown.map((item) => {
+      const date = new Date(`${item.date}T00:00:00Z`);
+      const isExternal = item.link?.startsWith('http');
+      return (
+        <li class="news-item">
+          <time class="news-date" datetime={item.date}>{formatDate(date, 'short')}</time>
+          <p class="news-text">
+            {item.text}
+            {item.link && (
+              <span class="news-link">
+                {' '}
+                <a
+                  href={item.link}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                >
+                  {item.linkLabel ?? 'Read more'}
+                  <Icon name="arrow-up-right" size={11} />
+                </a>
+              </span>
+            )}
+          </p>
+        </li>
+      );
+    })}
+  </ul>
+) : (
+  <div class="empty-state">
+    <p class="empty-state-title">No news yet</p>
+    <p>Updates will appear here as the work develops.</p>
+  </div>
+)}

@@ -1,0 +1,32 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import BlogIndex from '../../components/BlogIndex.astro';
+import { siteConfig } from '../../config/site';
+import { getPosts } from '../../lib/posts';
+
+const posts = await getPosts({ includeDrafts: import.meta.env.DEV });
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `${siteConfig.name} — Journal`,
+  description:
+    'Essays, stories, research notes, and personal writing by Youssef Amr.',
+  url: canonical,
+  author: { '@type': 'Person', name: siteConfig.name },
+};
+---
+
+<PageLayout
+  title="Journal"
+  eyebrow="Writing & notes"
+  lede="Essays, stories, research notes, and the occasional update from life. A slower corner of the site, organized by when it was written."
+  pageClass="journal-page"
+  description="The personal journal of Youssef Amr: thoughts, stories, research notes, and life."
+  structuredData={structuredData}
+>
+  <div class="container journal-index-wrap">
+    <BlogIndex posts={posts} />
+  </div>
+</PageLayout>

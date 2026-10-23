@@ -1,0 +1,20 @@
+---
+import { siteConfig } from '../config/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href);
+---
+
+<ul class="nav-list">
+  {siteConfig.nav.map((item) => (
+    <li>
+      <a
+        class="nav-link"
+        href={item.href}
+        aria-current={isActive(item.href) ? 'page' : undefined}
+      >
+        {item.label}
+      </a>
+    </li>
+  ))}
+</ul>

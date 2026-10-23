@@ -1,0 +1,41 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import BlogIndex from '../../../components/BlogIndex.astro';
+import { BLOG_CATEGORIES } from '../../../lib/categories';
+import { getPosts } from '../../../lib/posts';
+import { siteConfig } from '../../../config/site';
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const allPosts = await getPosts({ includeDrafts: import.meta.env.DEV });
+const posts = allPosts.filter((post) => post.data.category === category.name);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${category.name} — ${siteConfig.name}`,
+  description: category.description,
+  url: canonical,
+  isPartOf: { '@type': 'Blog', name: `${siteConfig.name} — Journal` },
+};
+---
+
+<PageLayout
+  title={category.name}
+  eyebrow="Journal category"
+  lede={category.description}
+  pageClass="journal-page"
+  description={`${category.name} writing by Youssef Amr. ${category.description}`}
+  structuredData={structuredData}
+>
+  <div class="container journal-index-wrap">
+    <BlogIndex posts={posts} activeCategory={category.slug} />
+  </div>
+</PageLayout>

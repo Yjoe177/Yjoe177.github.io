@@ -1,0 +1,80 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Icon from '../components/Icon.astro';
+import { activeContactLinks, hasEmail, siteConfig } from '../config/site';
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: canonical,
+  mainEntity: {
+    '@type': 'Person',
+    name: siteConfig.name,
+    jobTitle: siteConfig.role,
+    affiliation: { '@type': 'CollegeOrUniversity', name: siteConfig.affiliation },
+    ...(hasEmail ? { email: siteConfig.email } : {}),
+    sameAs: activeContactLinks.map((link) => link.href),
+  },
+};
+---
+
+<PageLayout
+  title="Contact"
+  eyebrow="Get in touch"
+  lede="For research conversations, collaboration, or questions about my work, use the details below."
+  description="Contact Youssef Amr, AI undergraduate at Westlake University."
+  structuredData={structuredData}
+>
+  <div class="container contact-grid">
+    <section aria-labelledby="contact-details">
+      <h2 class="contact-section-title" id="contact-details">Academic contact</h2>
+      <div class="contact-list">
+        {hasEmail && (
+          <div class="contact-list-item">
+            <span class="contact-list-label">{siteConfig.emailLabel}</span>
+            <span class="contact-list-value">
+              <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            </span>
+          </div>
+        )}
+        <div class="contact-list-item">
+          <span class="contact-list-label">Institution</span>
+          <span class="contact-list-value">
+            <a href={siteConfig.affiliationUrl} target="_blank" rel="noopener noreferrer">
+              {siteConfig.affiliation}
+            </a>
+          </span>
+        </div>
+        <div class="contact-list-item">
+          <span class="contact-list-label">Location</span>
+          <span class="contact-list-value">{siteConfig.location}</span>
+        </div>
+        {activeContactLinks.map((link) => (
+          <div class="contact-list-item">
+            <span class="contact-list-label">{link.label}</span>
+            <span class="contact-list-value">
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.handle || link.label}
+                <Icon name="arrow-up-right" size={13} />
+              </a>
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <aside class="contact-note" aria-labelledby="contact-note-title">
+      <h2 id="contact-note-title">Research conversations</h2>
+      <p>
+        I am glad to hear from people working on efficient AI, agentic systems,
+        TinyML, or adjacent problems. A short note about your work and what you
+        have in mind is the most useful way to start.
+      </p>
+      <p>
+        For a fuller record of my background, see the
+        <a class="text-link" href="/cv/"> curriculum vitae</a>.
+      </p>
+    </aside>
+  </div>
+</PageLayout>

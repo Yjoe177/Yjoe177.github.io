@@ -1,0 +1,62 @@
+---
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  structuredData?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  image,
+  type = 'website',
+  noindex = false,
+  publishedTime,
+  modifiedTime,
+  structuredData,
+} = Astro.props;
+
+const base = Astro.site ?? Astro.url;
+const canonical = new URL(Astro.url.pathname, base);
+const socialImage = image ?? siteConfig.ogImage;
+const imageUrl = new URL(socialImage, base);
+
+const documentTitle =
+  title === siteConfig.name
+    ? `${siteConfig.name} — ${siteConfig.role}, ${siteConfig.affiliation}`
+    : `${title} — ${siteConfig.name}`;
+
+const jsonLd = structuredData
+  ? JSON.stringify(structuredData).replaceAll('<', '\\u003c')
+  : null;
+---
+
+<title>{documentTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={siteConfig.name} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:title" content={documentTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content="en_US" />
+{imageUrl && <meta property="og:image" content={imageUrl} />}
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={documentTitle} />
+<meta name="twitter:description" content={description} />
+{imageUrl && <meta name="twitter:image" content={imageUrl} />}
+
+{jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}

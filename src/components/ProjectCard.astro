@@ -1,0 +1,64 @@
+---
+import type { ResearchProject } from '../lib/research';
+import { statusLabels } from '../lib/research';
+import StatusBadge from './StatusBadge.astro';
+import TagList from './TagList.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: ResearchProject;
+  position?: number;
+}
+
+const { project, position } = Astro.props;
+const href = `/research/${project.id}/`;
+const number = typeof position === 'number' ? String(position).padStart(2, '0') : null;
+---
+
+<article class="project-card">
+  {project.data.cover ? (
+    <div class="project-media">
+      <img
+        src={project.data.cover}
+        alt={project.data.coverAlt ?? ''}
+        width="1200"
+        height="750"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  ) : (
+    <div class="project-media project-media--empty" aria-hidden="true">
+      <span>Research</span>
+    </div>
+  )}
+
+  <div class="project-body">
+    <div class="project-topline">
+      {number && <span class="project-number">P.{number}</span>}
+      <StatusBadge status={project.data.status} label={statusLabels[project.data.status]} />
+    </div>
+
+    <h3 class="project-title">
+      <a href={href}>{project.data.title}</a>
+    </h3>
+
+    <p class="project-description">{project.data.description}</p>
+
+    {project.data.results.length > 0 && (
+      <ul class="result-list" aria-label="Selected results">
+        {project.data.results.slice(0, 2).map((result) => <li>{result}</li>)}
+      </ul>
+    )}
+
+    <TagList tags={project.data.topics.slice(0, 4)} class="project-topics" />
+
+    <div class="project-footer">
+      <span>{project.data.technologies[0] ?? project.data.period ?? 'Research project'}</span>
+      <a class="text-link" href={href}>
+        Read project
+        <Icon name="arrow-right" size={13} />
+      </a>
+    </div>
+  </div>
+</article>

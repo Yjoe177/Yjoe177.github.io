@@ -1,0 +1,113 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PublicationEntry from '../components/PublicationEntry.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { siteConfig } from '../config/site';
+import { getPublications, getResearch, statusLabels } from '../lib/research';
+
+const publications = await getPublications({ includeDrafts: import.meta.env.DEV });
+const research = await getResearch({ includeDrafts: import.meta.env.DEV });
+
+const published = publications.filter((entry) =>
+  entry.data.status === 'published' || entry.data.status === 'forthcoming'
+);
+const preprints = publications.filter((entry) =>
+  entry.data.status === 'preprint' || entry.data.status === 'ongoing'
+);
+const ongoingResearch = research.filter((project) => project.data.status === 'ongoing');
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Publications — ${siteConfig.name}`,
+  description: 'Published papers, preprints, and ongoing research by Youssef Amr.',
+  url: canonical,
+};
+---
+
+<PageLayout
+  title="Publications"
+  eyebrow="Record of work"
+  lede="Published papers, preprints, and ongoing projects are kept separate. Nothing is listed until it exists."
+  description="Publications and ongoing research by Youssef Amr in efficient AI, agentic systems, TinyML, and edge AI."
+  structuredData={structuredData}
+>
+  <section class="section">
+    <div class="container">
+      <div class="pub-section">
+        <div class="pub-section-head">
+          <h2 class="pub-section-title">Published &amp; forthcoming</h2>
+          <span class="pub-section-count">{published.length} {published.length === 1 ? 'entry' : 'entries'}</span>
+        </div>
+        {published.length > 0 ? (
+          published.map((publication) => <PublicationEntry publication={publication} />)
+        ) : (
+          <div class="empty-state">
+            <p class="empty-state-title">No publications are listed yet.</p>
+            <p>
+              Peer-reviewed papers and forthcoming work will appear here once
+              they have been confirmed. The project pages are the current record
+              of ongoing research.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div class="pub-section">
+        <div class="pub-section-head">
+          <h2 class="pub-section-title">Preprints &amp; work in progress</h2>
+          <span class="pub-section-count">{preprints.length} {preprints.length === 1 ? 'entry' : 'entries'}</span>
+        </div>
+        {preprints.length > 0 ? (
+          preprints.map((publication) => <PublicationEntry publication={publication} />)
+        ) : (
+          <p class="cv-empty">No preprints or working papers are listed.</p>
+        )}
+      </div>
+
+      <div class="pub-section">
+        <div class="pub-section-head">
+          <h2 class="pub-section-title">Ongoing research</h2>
+          <span class="pub-section-count">
+            {ongoingResearch.length} {ongoingResearch.length === 1 ? 'project' : 'projects'}
+          </span>
+        </div>
+        {ongoingResearch.length > 0 ? (
+          <div class="ongoing-list">
+            {ongoingResearch.map((project) => (
+              <div class="ongoing-item">
+                <div>
+                  <h3 class="ongoing-title">
+                    <a href={`/research/${project.id}/`}>{project.data.title}</a>
+                  </h3>
+                  <p class="ongoing-desc">{project.data.description}</p>
+                </div>
+                <StatusBadge
+                  status={project.data.status}
+                  label={statusLabels[project.data.status]}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="cv-empty">No ongoing projects are listed.</p>
+        )}
+      </div>
+
+      <div class="research-note">
+        <strong>How this page is organized.</strong> “Published &amp; forthcoming”
+        contains peer-reviewed or accepted work. “Preprints &amp; work in
+        progress” contains public manuscripts and entries marked ongoing without
+        a venue. “Ongoing research” links to project pages, which are not
+        publications.
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .pub-section .empty-state {
+    margin-top: 1rem;
+  }
+</style>

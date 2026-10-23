@@ -1,0 +1,92 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { siteConfig } from '../../config/site';
+import { getResearch } from '../../lib/research';
+
+const projects = await getResearch({ includeDrafts: import.meta.env.DEV });
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Research — ${siteConfig.name}`,
+  description:
+    'Research projects on efficient AI, agentic systems, TinyML, embedded AI, and inference optimization.',
+  url: canonical,
+  about: siteConfig.researchInterests,
+};
+---
+
+<PageLayout
+  title="Research"
+  eyebrow="Projects & directions"
+  lede="Efficient intelligence is a systems problem. I am interested in how models, kernels, and agents can be designed together so that useful AI runs within real constraints."
+  description="Research by Youssef Amr on efficient AI, agentic systems, TinyML, embedded AI, and inference optimization."
+  structuredData={structuredData}
+>
+  <section class="section">
+    <div class="container">
+      <SectionHeading index="01" title="Current projects" />
+      {projects.length > 0 ? (
+        <div class="project-grid">
+          {projects.map((project, index) => (
+            <ProjectCard project={project} position={index + 1} />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="empty-state-title">Projects are being written up.</p>
+          <p>Research pages will appear here as they are ready.</p>
+        </div>
+      )}
+
+      <div class="research-note">
+        <strong>A note on results.</strong> These pages describe ongoing
+        explorations. Performance numbers, dates, and outcomes are added only
+        after they have been measured and can be reproduced. See the
+        <a class="text-link" href="/publications/"> publication record</a> for
+        finished work.
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <SectionHeading index="02" title="Research directions" />
+      <p class="section-intro">
+        The projects are specific, but the questions overlap. These are the
+        directions that connect them.
+      </p>
+      <div class="research-themes">
+        {siteConfig.researchThemes.map((theme, index) => (
+          <article class="research-theme">
+            <span class="research-theme-index">R.{String(index + 1).padStart(2, '0')}</span>
+            <h3>{theme.title}</h3>
+            <p>{theme.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <SectionHeading
+        index="03"
+        title="Publications"
+        href="/publications/"
+        linkLabel="Publication record"
+      />
+      <div class="empty-state">
+        <p class="empty-state-title">No peer-reviewed publications are listed yet.</p>
+        <p>
+          The project pages are the most current record of the work. Published
+          papers and preprints will be listed on the publications page when
+          they exist.
+        </p>
+      </div>
+    </div>
+  </section>
+</PageLayout>

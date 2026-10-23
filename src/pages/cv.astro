@@ -1,0 +1,215 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Icon from '../components/Icon.astro';
+import { activeContactLinks, hasEmail, siteConfig } from '../config/site';
+import {
+  activities,
+  awards,
+  education,
+  researchExperience,
+  service,
+  skillGroups,
+} from '../data/profile';
+import { getPublications, getResearch, statusLabels } from '../lib/research';
+
+const research = await getResearch({ includeDrafts: import.meta.env.DEV });
+const publications = await getPublications({ includeDrafts: import.meta.env.DEV });
+const involvement = [...activities, ...service];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: `Curriculum Vitae — ${siteConfig.name}`,
+  mainEntity: {
+    '@type': 'Person',
+    name: siteConfig.name,
+    jobTitle: siteConfig.role,
+    affiliation: { '@type': 'CollegeOrUniversity', name: siteConfig.affiliation },
+    ...(hasEmail ? { email: siteConfig.email } : {}),
+    sameAs: activeContactLinks.map((link) => link.href),
+  },
+};
+---
+
+<PageLayout
+  title="Curriculum Vitae"
+  eyebrow="Academic record"
+  lede="Education, research experience, projects, and service. The downloadable one-page A4 PDFs are the canonical versions."
+  description="Curriculum vitae of Youssef Amr, AI undergraduate at Westlake University."
+  type="profile"
+  structuredData={structuredData}
+>
+  <div class="container cv-page">
+    <div class="cv-actions no-print">
+      {siteConfig.cv.downloads.map((download, index) => (
+        <a
+          class:list={['button', index > 0 ? 'button--ghost' : '']}
+          href={download.path}
+          download
+        >
+          {download.label}
+          <Icon name="download" size={15} />
+        </a>
+      ))}
+      <button class="button button--ghost" type="button" id="print-cv">
+        Print this page
+      </button>
+      <span class="cv-updated">Updated {siteConfig.cv.updated}</span>
+    </div>
+
+    <p class="cv-download-note no-print">
+      The research CV is tailored to academic and research applications; the
+      industry resume emphasizes embedded systems and engineering work. Both are
+      one-page A4 PDFs.
+    </p>
+
+    <article class="cv-sheet" aria-label="Curriculum vitae content">
+      <header class="cv-head">
+        <div>
+          <p class="cv-name">{siteConfig.name}</p>
+          <p class="cv-role">{siteConfig.role} · {siteConfig.affiliation}</p>
+        </div>
+        <div class="cv-head-meta">
+          <span>{siteConfig.location}</span>
+          {hasEmail && <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>}
+          {activeContactLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+          ))}
+        </div>
+      </header>
+
+      <section class="cv-section" aria-labelledby="cv-education">
+        <h2 class="cv-section-title" id="cv-education">Education</h2>
+        {education.map((entry) => (
+          <div class="cv-entry">
+            <div class="cv-entry-head">
+              <h3 class="cv-entry-title">{entry.institution}</h3>
+              <span class="cv-entry-date">{entry.period}</span>
+            </div>
+            <p class="cv-entry-sub">{entry.degree} · {entry.location}</p>
+            {entry.details.length > 0 && (
+              <div class="cv-entry-desc">
+                {entry.details.map((detail) => <p>{detail}</p>)}
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-research-experience">
+        <h2 class="cv-section-title" id="cv-research-experience">Research experience</h2>
+        {researchExperience.map((entry) => (
+          <div class="cv-entry">
+            <div class="cv-entry-head">
+              <h3 class="cv-entry-title">{entry.title}</h3>
+              <span class="cv-entry-date">{entry.period}</span>
+            </div>
+            {entry.organization && <p class="cv-entry-sub">{entry.organization}</p>}
+            <p class="cv-entry-desc">{entry.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-projects">
+        <h2 class="cv-section-title" id="cv-projects">Selected projects</h2>
+        {research.map((project) => (
+          <div class="cv-entry">
+            <div class="cv-entry-head">
+              <h3 class="cv-entry-title">{project.data.title}</h3>
+              <span class="cv-entry-date">{statusLabels[project.data.status]}</span>
+            </div>
+            <p class="cv-entry-desc">{project.data.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-publications">
+        <h2 class="cv-section-title" id="cv-publications">Publications</h2>
+        {publications.length > 0 ? (
+          publications.map((publication) => (
+            <div class="cv-entry">
+              <p class="cv-entry-title">{publication.data.title}</p>
+              <p class="cv-entry-sub">
+                {publication.data.authors.join(', ')} · {publication.data.venue} ({publication.data.year})
+              </p>
+            </div>
+          ))
+        ) : (
+          <p class="cv-empty">No publications listed yet.</p>
+        )}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-awards">
+        <h2 class="cv-section-title" id="cv-awards">Awards &amp; honours</h2>
+        {awards.map((award) => (
+          <div class="cv-entry">
+            <div class="cv-entry-head">
+              <h3 class="cv-entry-title">{award.title}</h3>
+              <span class="cv-entry-date">{award.period}</span>
+            </div>
+            {award.organization && <p class="cv-entry-sub">{award.organization}</p>}
+            <p class="cv-entry-desc">{award.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-activities">
+        <h2 class="cv-section-title" id="cv-activities">Teaching &amp; outreach</h2>
+        {involvement.map((item) => (
+          <div class="cv-entry">
+            <div class="cv-entry-head">
+              <h3 class="cv-entry-title">{item.title}</h3>
+              <span class="cv-entry-date">{item.period}</span>
+            </div>
+            {item.organization && <p class="cv-entry-sub">{item.organization}</p>}
+            <p class="cv-entry-desc">{item.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-skills">
+        <h2 class="cv-section-title" id="cv-skills">Technical skills</h2>
+        {skillGroups.map((group) => (
+          <div class="cv-skill-group">
+            <h3 class="cv-skill-title">{group.title}</h3>
+            <ul class="chip-list">
+              {group.items.map((item) => <li class="chip">{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-interests">
+        <h2 class="cv-section-title" id="cv-interests">Research interests</h2>
+        <ul class="chip-list">
+          {siteConfig.researchInterests.map((interest) => (
+            <li class="chip">{interest}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-contact">
+        <h2 class="cv-section-title" id="cv-contact">Contact</h2>
+        <div class="cv-list">
+          {hasEmail && (
+            <div class="cv-list-item">
+              <span>{siteConfig.email}</span>
+              <span>Email</span>
+            </div>
+          )}
+          {activeContactLinks.map((link) => (
+            <div class="cv-list-item">
+              <span>{link.label}</span>
+              <span>{link.href}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </article>
+  </div>
+</PageLayout>
+
+<script>
+  const printButton = document.querySelector<HTMLButtonElement>('#print-cv');
+  printButton?.addEventListener('click', () => window.print());
+</script>

@@ -1,0 +1,33 @@
+---
+import type { BlogPost } from '../lib/posts';
+import { categorySlug } from '../lib/categories';
+import { formatDate, readingTime } from '../lib/posts';
+import Icon from './Icon.astro';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const href = `/blog/${post.id}/`;
+const minutes = readingTime(post.body);
+---
+
+<article class="post-preview">
+  <div class="post-preview-main">
+    <h3 class="post-preview-title">
+      <a href={href}>{post.data.title}</a>
+    </h3>
+    <div class="post-preview-meta">
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, 'short')}</time>
+      <span aria-hidden="true">·</span>
+      <a href={`/blog/category/${categorySlug(post.data.category)}/`}>{post.data.category}</a>
+      <span aria-hidden="true">·</span>
+      <span>{minutes} min read</span>
+      {post.data.draft && <span class="badge badge--draft">Draft</span>}
+    </div>
+  </div>
+  <span class="post-preview-arrow" aria-hidden="true">
+    <Icon name="arrow-up-right" size={16} />
+  </span>
+</article>

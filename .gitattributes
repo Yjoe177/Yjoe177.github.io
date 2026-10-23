@@ -1,0 +1,8 @@
+# Normalize text files for GitHub Actions/Linux, keep binaries untouched.
+* text=auto eol=lf
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.pdf binary
+*.woff2 binary
+*.ico binary

@@ -1,0 +1,51 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lede?: string;
+  headerClass?: string;
+  pageClass?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>;
+}
+
+const {
+  title,
+  eyebrow,
+  lede,
+  headerClass,
+  pageClass,
+  description,
+  image,
+  type,
+  noindex,
+  structuredData,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  type={type}
+  noindex={noindex}
+  structuredData={structuredData}
+>
+  <div class={pageClass}>
+    <header class:list={['page-header', headerClass]}>
+      <div class="container">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        <h1 class="page-title">{title}</h1>
+        {lede && <p class="page-lede">{lede}</p>}
+        <slot name="header-extra" />
+      </div>
+    </header>
+
+    <slot />
+  </div>
+</BaseLayout>

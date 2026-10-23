@@ -1,0 +1,123 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../config/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  structuredData?: Record<string, unknown>;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  image,
+  type,
+  noindex,
+  publishedTime,
+  modifiedTime,
+  structuredData,
+  bodyClass,
+} = Astro.props;
+
+const rssHref = new URL('rss.xml', Astro.site ?? Astro.url);
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f7f4ed" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131412" media="(prefers-color-scheme: dark)" />
+
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('theme');
+        const theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.dataset.theme = theme;
+      } catch {
+        document.documentElement.dataset.theme = 'light';
+      }
+    </script>
+
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      noindex={noindex}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      structuredData={structuredData}
+    />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/newsreader-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} — Journal`} href={rssHref} />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Make wide Markdown tables keyboard-scrollable while preserving table
+      // semantics. The table still scrolls without JavaScript via CSS.
+      const tables = document.querySelectorAll<HTMLTableElement>('.prose table');
+
+      const enhanceTables = () => {
+        tables.forEach((table) => {
+          let wrapper = table.closest<HTMLElement>('.table-scroll');
+          if (!wrapper) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'table-scroll';
+            table.parentElement?.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+          }
+
+          const scrollable = wrapper.scrollWidth > wrapper.clientWidth + 1;
+          if (scrollable) {
+            wrapper.tabIndex = 0;
+            wrapper.setAttribute('role', 'region');
+            wrapper.setAttribute(
+              'aria-label',
+              'Data table. Scroll horizontally to see all columns.',
+            );
+          } else {
+            wrapper.removeAttribute('tabindex');
+            wrapper.removeAttribute('role');
+            wrapper.removeAttribute('aria-label');
+          }
+        });
+      };
+
+      enhanceTables();
+
+      let resizeTimer: number | undefined;
+      window.addEventListener('resize', () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(enhanceTables, 120);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The page you were looking for does not exist."
+  noindex
+>
+  <section class="container not-found">
+    <p class="not-found-code" aria-hidden="true">404</p>
+    <h1>This page wandered off.</h1>
+    <p>
+      The link may be old, or the page may not have been written yet. The
+      research and journal indexes are good places to continue.
+    </p>
+    <div class="not-found-actions">
+      <a class="button" href="/">
+        Back home
+        <Icon name="arrow-right" size={15} />
+      </a>
+      <a class="button button--ghost" href="/research/">Research</a>
+      <a class="button button--ghost" href="/blog/">Journal</a>
+    </div>
+  </section>
+</BaseLayout>
