@@ -1747,18 +1747,41 @@ hr {
     linear-gradient(180deg, color-mix(in srgb, var(--warm-soft) 45%, transparent), transparent 80%);
 }
 
-.btl-hero::before {
-  content: "\201C";
+.btl-hero::before,
+.btl-hero::after {
   position: absolute;
-  top: -2.8rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: clamp(5rem, 6vw + 2.4rem, 7.7rem);
   font-family: var(--font-serif);
-  font-size: clamp(14rem, 28vw, 23rem);
+  font-size: clamp(5rem, 12vw, 13rem);
   line-height: 1;
   color: var(--writing-accent);
   opacity: 0.055;
   pointer-events: none;
+}
+
+.btl-hero::before {
+  content: "\201C";
+  left: max(0.75rem, calc(50% - 25rem));
+}
+
+.btl-hero::after {
+  content: "\201D";
+  right: max(0.75rem, calc(50% - 25rem));
+}
+
+@media (max-width: 640px) {
+  .btl-hero::before,
+  .btl-hero::after {
+    font-size: 4.5rem;
+  }
+
+  .btl-hero::before {
+    left: 0;
+  }
+
+  .btl-hero::after {
+    right: 0;
+  }
 }
 
 .btl-hero-inner {
