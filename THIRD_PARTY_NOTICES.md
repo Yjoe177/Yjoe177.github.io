@@ -31,6 +31,6 @@ photograph supplied by the site owner. The untouched original (`Youssef.jpg`) is
 kept locally and is intentionally excluded from the public repository.
 
 The research CV and industry resume PDFs were supplied by the owner and are
-published with permission. The public copies were recompiled from the owner's
-LaTeX sources with the phone number removed; full-content originals are kept
-privately and are not in the public repository.
+published with permission. The public copies intentionally use Youssef Ahmed and
+include the phone number; the website identity remains Youssef Amr. Archival
+originals are kept privately and are not in the public repository.

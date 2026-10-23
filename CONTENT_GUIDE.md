@@ -477,19 +477,20 @@ cv: {
 },
 ```
 
-1. Replace the relevant PDF in `public/cv/` when a new version is compiled.
+1. Replace the relevant PDF in `public/cv/` with the compiled Classic PDF
+   supplied by the owner.
 2. Update `cv.updated`.
 3. Keep `src/data/profile.ts` in sync with the PDF content.
 4. Do not add a placeholder PDF as a downloadable CV.
 
-The public PDFs were rebuilt from the LaTeX sources with the phone number
-removed from the contact line. All other text is unchanged. The unredacted
+The public PDFs are the owner-supplied Classic exports. They intentionally use
+Youssef Ahmed and include the phone number; the website identity remains Youssef
+Amr. Do not redact or rename them without explicit owner confirmation. Archival
 originals are preserved privately in `private/cv/` (gitignored) and in the
-original LaTeX package. Do not publish the private originals.
+original LaTeX package.
 
-The CV page links only to the redacted public copies. If you update the CV,
-rebuild redacted versions from the LaTeX source rather than editing the PDF
-visually.
+The CV page links only to these public copies. If the owner supplies a newer
+version, replace the two public PDFs rather than editing them visually.
 
 The `/cv/` page can also be printed to PDF from the browser as a fallback; its
 print stylesheet hides navigation and chrome.
@@ -541,12 +542,12 @@ Keep the claims consistent with the rest of the site.
 - [ ] Confirm no `draft: true` content is meant to be public.
 - [ ] Confirm the email and profile URLs are current.
 - [ ] Confirm the two CV PDFs are the intended public versions.
-- [ ] Confirm the two redacted CV PDFs open and do not contain a phone number.
+- [ ] Confirm the two CV PDFs are the intended public versions (they use Youssef Ahmed and include the phone number).
 - [ ] Confirm the portrait crop and alt text.
 - [ ] Confirm only *Through My 19th Year* displays July 17, 2026.
 - [ ] Confirm the other three posts display no date in the index, homepage, or article page.
 - [ ] Confirm RSS/SEO do not treat `displayDate` as a publication timestamp.
-- [ ] Confirm both public CVs use the new LinkedIn URL and no phone number.
+- [ ] Confirm both public CVs use the new LinkedIn URL and the owner-approved contact line.
 - [ ] Verify every research claim and remove any unverified numbers.
 - [ ] Add real publications only if they exist; leave `_template.md` hidden.
 - [ ] Run `npm run check` (0 errors).

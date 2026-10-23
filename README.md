@@ -12,7 +12,7 @@ collections, and hand-written CSS.
 - Between the Lines: uncategorized writing, optional dates, manual ordering,
   drafts, covers, RSS
 - Clickable academic links for Westlake University, ENCODE Lab, and Prof. Huan Wang
-- CV page with two downloadable one-page A4 PDFs (phone number redacted)
+- CV page with two downloadable one-page A4 PDFs (the PDFs use Youssef Ahmed and include the phone number; the website identity remains Youssef Amr)
 - Featured photograph on Home and About
 - Light/dark mode, responsive layout, keyboard-friendly navigation
 - No client framework, no database, no backend
@@ -58,11 +58,11 @@ Open the URL printed by Astro, normally
 .
 ├─ .github/workflows/deploy.yml  # GitHub Pages deployment
 ├─ public/
-│  ├─ cv/                        # Redacted public CV + industry resume PDFs
+│  ├─ cv/                        # Public CV + industry resume PDFs
 │  ├─ fonts/                     # Self-hosted variable fonts + OFL license
 │  ├─ images/                    # Portrait, research covers, social card
 │  └─ .nojekyll                  # GitHub Pages: keep /_astro assets
-├─ private/                      # Gitignored: unredacted CV originals
+├─ private/                      # Gitignored: archival CV originals
 ├─ scripts/                      # Portrait + OG image generators
 ├─ src/
 │  ├─ components/                # Reusable UI (header, cards, lists, icons)
@@ -102,9 +102,9 @@ Everything reader-facing is separated from the components.
 | Publications | `src/content/publications/` |
 | News | `src/data/news.ts` |
 | Education, research experience, awards, skills | `src/data/profile.ts` |
-| Research CV PDF (public, redacted) | `public/cv/youssef-amr-research-cv.pdf` |
-| Industry resume PDF (public, redacted) | `public/cv/youssef-amr-industry-resume.pdf` |
-| Unredacted CV originals (private) | `private/cv/` (gitignored) |
+| Research CV PDF (public) | `public/cv/youssef-amr-research-cv.pdf` |
+| Industry resume PDF (public) | `public/cv/youssef-amr-industry-resume.pdf` |
+| CV originals (private) | `private/cv/` (gitignored) |
 | Web portrait | `public/images/youssef-amr.jpg` |
 | Original photo source (local only) | `Youssef.jpg` (gitignored) |
 | Social sharing image | `public/images/og-default.svg` → `.png` |

@@ -78,15 +78,12 @@ Where: `src/config/site.ts`. Empty links are hidden.
 
 ### 5. Phone number in CVs
 
-The public PDFs have been rebuilt from the LaTeX sources without the phone
-number. The unredacted originals are preserved privately in `private/cv/`
-(gitignored) and in the original LaTeX package.
+The owner explicitly approved publishing the phone number and the name
+**Youssef Ahmed** in both public CV PDFs. The website identity remains
+**Youssef Amr**. Do not redact or rename the PDFs without new confirmation.
 
-- [ ] No action needed. If you ever want a different contact line on the web
-  CVs, rebuild from the LaTeX source.
-
-The website does not repeat the phone number, and the public PDFs do not contain
-it in text, metadata, annotations, or `tel:` links.
+- [ ] No action needed. If the owner supplies a newer CV export, replace the
+  public PDFs with that exact version.
 
 ### 6. Award statistics
 
@@ -141,5 +138,5 @@ honest empty state. Four Between the Lines posts are published.
 - Unverifiable performance numbers.
 - Private collaborator information without permission.
 - A phone number or home address for the website itself unless you intend it to
-  be public. The public CV PDFs have been redacted; do not send the number for
-  the website.
+  be public. The CV PDFs already include the phone number by explicit owner
+  instruction; the website identity remains Youssef Amr.

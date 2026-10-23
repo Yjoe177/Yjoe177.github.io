@@ -224,8 +224,10 @@ publications, about, CV, contact, 404, responsive, motion, print.
 - `/rss.xml`, `/robots.txt`, and the sitemap derive from `Astro.site`.
 - `public/.nojekyll` is required for GitHub Pages to serve `_astro/` when
   deploying build output directly.
-- `private/` is gitignored and holds unredacted CV originals; never copy it into
-  `public/`.
+- `private/` is gitignored and holds archival CV originals. The public CV PDFs
+  are supplied by the owner and intentionally use Youssef Ahmed and include the
+  phone number; do not alter those documents without confirmation. The website
+  identity remains Youssef Amr.
 - `BaseLayout` preloads the two main font files. Keep the RSS autodiscovery link.
 
 ## Coding conventions
@@ -315,15 +317,15 @@ Manual/automated checks performed for this revision:
 - The four posts are in supplied zip order via `order` 1–4; *Through My 19th
   Year* is second in Between the Lines and on the homepage preview.
 - LinkedIn config and both public CV PDFs point to
-  `https://www.linkedin.com/in/youssef-amr-9b2541290/`; the PDFs remain redacted
-  and one-page A4.
+  `https://www.linkedin.com/in/youssef-amr-9b2541290`; the PDFs are one-page A4
+  and intentionally use the owner-supplied Youssef Ahmed/phone contact line.
 - axe-core audit across representative pages, themes, and widths: 0 violations
   (28 checks).
 - Portrait face detection confirms the cropped face is fully inside the frame
   with 26% headroom and 36–37% side margins.
-- Both public CV PDFs are one page, A4, and contain no phone number in extracted
-  text, metadata, annotations, or `tel:` links. Text matches the private
-  originals except for the removed phone number.
+- Both public CV PDFs are one page, A4, use Youssef Ahmed, include the phone
+  number, and point to the new LinkedIn URL, matching the owner-supplied Classic
+  PDFs.
 - CV print media hides header/footer/actions; the sheet becomes white and
   borderless.
 
@@ -363,9 +365,9 @@ phone widths.
 - Research project naming is unresolved: the site uses TinySSM and Agentic MCU
   Kernel Optimization while the current CV uses TinyMamba and Agentic TinyML.
   Do not rename without owner confirmation.
-- The public CV PDFs are recompiled without the phone number. Unredacted
-  originals are preserved privately in `private/cv/` (gitignored) and must not
-  be published.
+- The public CV PDFs use Youssef Ahmed and include the phone number by explicit
+  owner instruction; the website identity remains Youssef Amr. Do not rename or
+  redact the PDFs, or rename the site, without owner confirmation.
 - Contact uses email/profile links only; there is no form or backend.
 - No search, comments, analytics, newsletter, or CMS.
 - RSS is valid and reflects the published writing order. Posts without
